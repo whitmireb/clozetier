@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'clozetier_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'MySQL80',
+        'NAME': 'clozetier_db',
         'USER': 'sftwr_engnrng',
         'PASSWORD': '2331231191697592',
         'HOST': 'localhost',  # Or your MySQL server IP
