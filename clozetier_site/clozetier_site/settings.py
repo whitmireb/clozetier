@@ -73,10 +73,16 @@ WSGI_APPLICATION = 'clozetier_site.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# sftwr_engnrng
+# 2331231191697592s
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'MySQL80',
+        'USER': 'sftwr_engnrng',
+        'PASSWORD': '2331231191697592',
+        'HOST': 'localhost',  # Or your MySQL server IP
+        'PORT': '3306',       # Default MySQL port
     }
 }
 
@@ -105,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'EST'
 
 USE_I18N = True
 
