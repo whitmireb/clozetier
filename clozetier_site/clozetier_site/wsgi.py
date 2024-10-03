@@ -1,5 +1,5 @@
 """
-WSGI config for clozetier project.
+WSGI config for clozetier_site project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'clozetier.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'clozetier_site.settings')
 
 application = get_wsgi_application()
