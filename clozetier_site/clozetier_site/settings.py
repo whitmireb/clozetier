@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "accounts",  
 ]
 
 MIDDLEWARE = [
@@ -54,7 +55,7 @@ ROOT_URLCONF = 'clozetier_site.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        "DIRS": [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -81,7 +82,7 @@ DATABASES = {
         'NAME': 'clozetier_db',
         'USER': 'sftwr_engnrng',
         'PASSWORD': '2331231191697592',
-        'HOST': 'localhost',  # Or your MySQL server IP
+        'HOST': '127.0.0.1',  # Or your MySQL server IP
         'PORT': '3306',       # Default MySQL port
     }
 }
@@ -127,3 +128,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# django_project/settings.py
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+
+# django_project/settings.py
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

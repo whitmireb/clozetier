@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\gjwhi\Downloads\epic stuff\VSCode\codeStuff\software engineering\clozetier_project\clozetier_env
+set VIRTUAL_ENV=C:\Users\prest\OneDrive\Desktop\clozetier-1\clozetier_env
 
 if not defined PROMPT set PROMPT=$P$G
 
