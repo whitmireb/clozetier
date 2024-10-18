@@ -2,6 +2,6 @@
 __pycache__/
 .env
 db.sqlite3
-media/*
-!media/.gitkeep
+clozetier_site/media/*
+!.gitkeep
 clozetier_env/
