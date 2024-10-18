@@ -17,6 +17,11 @@
     {% if result %}
     <h2>Result: {{ result }}</h2>
     {% endif %}
+
+    {% if uploaded_image_url %}
+    <img src="{{ uploaded_image_url }}" alt="Uploaded Image" style="width: auto; height: 300px;">
+    {% endif %}
+
 </body>
 
 </html>

@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
 from .forms import ClothingItemForm
 from .models import ClothingItem
+from django.conf import settings
 from .model_utils import run_image_through_model
 
 def index(request):
@@ -12,7 +13,7 @@ def index(request):
         if form.is_valid():
             # Save the image
             image = form.cleaned_data['image']
-            fs = FileSystemStorage()
+            fs = FileSystemStorage(location=settings.MEDIA_ROOT)
             filename = fs.save(image.name, image)
             uploaded_image_url = fs.url(filename)
             
