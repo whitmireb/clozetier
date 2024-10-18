@@ -6,12 +6,12 @@ from torchvision.models import efficientnet_b0
 import torch.nn as nn
 from PIL import Image
 
-model = efficientnet_b0(pretrained=True)
+model = models.efficientnet_b0(weights='IMAGENET1K_V1')
 
 num_classes = 14
 model.classifier[1] = nn.Linear(model.classifier[1].in_features, num_classes)
 
-state_dict = torch.load('Clothing_AI_Model.pt', map_location=torch.device('cpu'))
+state_dict = torch.load('Clothing_AI_Model.pt', map_location=torch.device('cpu'), weights_only=True)
 
 model.load_state_dict(state_dict)
 
