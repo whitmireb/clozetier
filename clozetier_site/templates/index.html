@@ -14,12 +14,18 @@
         <button type="submit">Upload Image</button>
     </form>
 
-    {% if result %}
+    <!-- {% if result %}
     <h2>Result: {{ result }}</h2>
     {% endif %}
 
     {% if uploaded_image_url %}
     <img src="{{ uploaded_image_url }}" alt="Uploaded Image" style="width: auto; height: 300px;">
+    {% endif %} -->
+
+    {% if messages %}
+    {% for message in messages %}
+        <h2>{% if message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}</h2>
+    {% endfor %}
     {% endif %}
 
     <h1>Your Clothing Items</h1>

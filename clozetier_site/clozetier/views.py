@@ -1,5 +1,6 @@
 # clozetier/views.py
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
@@ -26,12 +27,18 @@ def index(request):
             # Save the result to the database
             uploaded_image = ClothingItem(user=request.user, image=filename, cloth_type=result, cloth_color='blue')
             uploaded_image.save()
+
+            messages.success(request, f'Successfully uploaded image:<br><img src="{uploaded_image_url}" style="width:auto;height:300px;">', extra_tags='safe')
+            messages.info(request, f'Clothing type detected: {result}')
             
-            return render(request, 'index.html', {
-                'form': form,
-                'uploaded_image_url': uploaded_image_url,
-                'result': result,
-            })
+            # return render(request, 'index.html', {
+            #     'form': form,
+            #     'uploaded_image_url': uploaded_image_url,
+            #     'result': result,
+            # })
+
+            return redirect('index')
+
     else:
         form = ClothingItemForm()
 
