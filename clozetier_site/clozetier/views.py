@@ -31,12 +31,6 @@ def index(request):
             messages.success(request, f'Successfully uploaded image:<br><img src="{uploaded_image_url}" style="width:auto;height:300px;">', extra_tags='safe')
             messages.info(request, f'Clothing type detected: {result}')
             
-            # return render(request, 'index.html', {
-            #     'form': form,
-            #     'uploaded_image_url': uploaded_image_url,
-            #     'result': result,
-            # })
-
             return redirect('index')
 
     else:
