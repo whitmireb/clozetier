@@ -84,7 +84,7 @@ DATABASES = {
         'NAME': 'clozetier_db',
         'USER': 'sftwr_engnrng',
         'PASSWORD': '2331231191697592',
-        'HOST': '127.0.0.1',  # Or your MySQL server IP
+        'HOST': '173.169.185.24',
         'PORT': '3306',       # Default MySQL port
     }
 }
