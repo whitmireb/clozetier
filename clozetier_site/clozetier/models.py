@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 """
 1. Change your models (in models.py).
@@ -8,6 +9,7 @@ from django.db import models
 
 # Create your models here.
 class ClothingItem(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     cloth_type = models.CharField(max_length=50)
     cloth_color = models.CharField(max_length=50)
     image = models.ImageField()

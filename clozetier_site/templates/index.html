@@ -22,6 +22,17 @@
     <img src="{{ uploaded_image_url }}" alt="Uploaded Image" style="width: auto; height: 300px;">
     {% endif %}
 
+    <h1>Your Clothing Items</h1>
+    
+    <ul>
+        {% for item in items %}
+        <img src="{{ item.image.url }}" alt="Item Image" style="width: auto; height: 200px;">
+        <li>{{ item.cloth_color }} - {{ item.cloth_type }}</li>
+        {% empty %}
+        <li>You have not uploaded any items yet.</li>
+        {% endfor %}
+    </ul>
+
 </body>
 
 </html>

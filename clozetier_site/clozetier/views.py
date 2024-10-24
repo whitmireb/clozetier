@@ -1,5 +1,6 @@
 # clozetier/views.py
 
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
 from .forms import ClothingItemForm
@@ -7,6 +8,7 @@ from .models import ClothingItem
 from django.conf import settings
 from .model_utils import run_image_through_model
 
+@login_required
 def index(request):
     if request.method == 'POST':
         form = ClothingItemForm(request.POST, request.FILES)
@@ -22,7 +24,7 @@ def index(request):
             labels = ['blazer','body','buttondown-shirt','dress','hat','hoodie','longsleve','pants','polo-shirt','shoes','shorts','skirt','T-shirt','under-shirt']
             result = labels[result]
             # Save the result to the database
-            uploaded_image = ClothingItem(image=filename, cloth_type=result, cloth_color='blue')
+            uploaded_image = ClothingItem(user=request.user, image=filename, cloth_type=result, cloth_color='blue')
             uploaded_image.save()
             
             return render(request, 'index.html', {
@@ -32,4 +34,6 @@ def index(request):
             })
     else:
         form = ClothingItemForm()
-    return render(request, 'index.html', {'form': form})  # Use 'index.html' here
+
+    user_items = ClothingItem.objects.filter(user=request.user)
+    return render(request, 'index.html', {'form': form, 'items': user_items})  # Use 'index.html' here
