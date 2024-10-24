@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html>
+{% extends 'base.html' %}
 
-<head>
-    <title>Image Upload</title>
-</head>
+{% block title %}Image Upload{% endblock %}
 
-<body>
+{% block content %}
     <h1>Upload an Image</h1>
 
     <form method="POST" enctype="multipart/form-data" action="{% url 'index' %}">
@@ -15,22 +12,19 @@
     </form>
 
     {% if messages %}
-    {% for message in messages %}
-        <h2>{% if message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}</h2>
-    {% endfor %}
+        {% for message in messages %}
+            <h2>{% if message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}</h2>
+        {% endfor %}
     {% endif %}
 
     <h1>Your Clothing Items</h1>
-    
+
     <ul>
         {% for item in items %}
-        <img src="{{ item.image.url }}" alt="Item Image" style="width: auto; height: 200px;">
-        <li>{{ item.cloth_color }} - {{ item.cloth_type }}</li>
+            <img src="{{ item.image.url }}" alt="Item Image" style="width: auto; height: 200px;">
+            <li>{{ item.cloth_color }} - {{ item.cloth_type }}</li>
         {% empty %}
-        <li>You have not uploaded any items yet.</li>
+            <li>You have not uploaded any items yet.</li>
         {% endfor %}
     </ul>
-
-</body>
-
-</html>
+{% endblock %}
