@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block title %}Image Upload{% endblock %}
 
 {% block content %}
@@ -7,9 +6,25 @@
 
     <form method="POST" enctype="multipart/form-data" action="{% url 'index' %}">
         {% csrf_token %}
-        <input type="file" name="image" accept="image/*" required>
-        <button type="submit">Upload Image</button>
+        <button id="file-upload-button" type="button" class="custom-button">
+            <div class="shadow"></div>
+            <div class="edge"></div>
+            <div class="front">
+                <span>Choose File</span>
+            </div>
+        </button>
+        <input id="file-upload" type="file" name="image" style="display: none;" required />
+
+        <button id="upload-button" type="submit" class="custom-button"> <!-- Add an ID for easier debugging -->
+            <div class="shadow"></div>
+            <div class="edge"></div>
+            <div class="front">
+                <span>Upload Image</span>
+            </div>
+        </button>
     </form>
+
+
 
     {% if messages %}
         {% for message in messages %}

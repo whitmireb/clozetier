@@ -1,9 +1,15 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}CLOZETIER{% endblock %}</title>
+
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
     <style>
         * {
             margin: 0;
@@ -70,28 +76,28 @@
         .content {
             padding: 20px;
         }
-
     </style>
 </head>
+
 <body>
     <div class="sidebar">
         <h2>CLOZETIER</h2>
-        <a href="http://127.0.0.1:8000/">Home</a>
-        <a href="http://127.0.0.1:8000/about/">About</a>
-        <a href="http://127.0.0.1:8000/clozetier/">Clozetier</a> <!-- Updated Clozetier link -->
-        <a href="http://127.0.0.1:8000/contact/">Contact</a>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'about' %}">About</a>
+        <a href="{% url 'index' %}">Clozetier</a> <!-- Updated Clozetier link -->
+        <a href="{% url 'contact' %}">Contact</a>
     </div>
 
     <div class="main-content">
         <div class="top-bar">
             {% if user.is_authenticated %}
-                <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit">Log Out</button>
-                </form>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Log Out</button>
+            </form>
             {% else %}
-                <a href="{% url 'signup' %}"><button>Sign Up</button></a>
-                <a href="{% url 'login' %}"><button>Login</button></a>
+            <a href="{% url 'signup' %}"><button>Sign Up</button></a>
+            <a href="{% url 'login' %}"><button>Login</button></a>
             {% endif %}
         </div>
         <div class="content">
@@ -100,5 +106,26 @@
             {% endblock %}
         </div>
     </div>
+
+    <script>
+        let lastFileName = '';
+
+        document.getElementById('file-upload-button').addEventListener('click', function () {
+            document.getElementById('file-upload').click(); // Trigger the file input
+        });
+
+        // Optional: To give feedback if a file has been selected
+        document.getElementById('file-upload').addEventListener('change', function () {
+            if (this.files.length > 0) {
+                // Update button text or provide feedback
+                lastFileName = this.files[0].name
+                document.getElementById('file-upload-button').querySelector('span').textContent = lastFileName;
+            }
+        });
+    </script>
+
+
+
 </body>
+
 </html>
