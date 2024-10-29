@@ -1,129 +1,90 @@
-# # clozetier/model_utils.py
-
-# import torch
-# from torchvision import transforms, models
-# from torchvision.models import efficientnet_b0
-# import torch.nn as nn
-# from PIL import Image
-
-# model = models.efficientnet_b0(weights='IMAGENET1K_V1')
-
-# num_classes = 14
-# model.classifier[1] = nn.Linear(model.classifier[1].in_features, num_classes)
-
-# state_dict = torch.load('Clothing_AI_Model.pt', map_location=torch.device('cpu'), weights_only=True)
-
-# model.load_state_dict(state_dict)
-
-# model.eval()
-
-# def run_image_through_model(image_path):
-#     # Define the transformations
-#     transform = transforms.Compose([
-#     transforms.Resize((224, 224)),
-#     transforms.ToTensor(),
-#     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-# ])
-
-#     # Load the image
-#     image = Image.open(image_path).convert('RGB')
-
-#     # Apply transformations
-#     input_tensor = transform(image).unsqueeze(0)
-
-#     # Pass the image through the model
-#     with torch.no_grad():
-#         output = model(input_tensor)
-
-#     return output.argmax(dim=1).item()
-
-
-# clozetier/model_utils.py
-
-# clozetier/model_utils.py
-
-# model_utils.py
-
 import torch
-print(torch.__version__)
 from torchvision import transforms, models
-from torchvision.models import efficientnet_b0
 import torch.nn as nn
 from PIL import Image
+import joblib
+import numpy as np
+from torchvision.transforms import functional as F
+import numpy as np
+from sklearn.cluster import KMeans
+# Define the ColorClassifier
+class ColorClassifier(nn.Module):
+    def __init__(self):
+        super(ColorClassifier, self).__init__()
+        self.fc1 = nn.Linear(3, 16)  # Input layer (3 RGB values) to hidden layer (16 neurons)
+        self.fc2 = nn.Linear(16, 16)  # Hidden layer (16 neurons) to hidden layer (16 neurons)
+        self.fc3 = nn.Linear(16, len(label_encoder.classes_))  # Hidden layer to output layer (number of categories)
+
+    def forward(self, x):
+        x = torch.relu(self.fc1(x))  # Apply ReLU activation
+        x = torch.relu(self.fc2(x))  # Apply ReLU activation
+        x = self.fc3(x)               # Output layer (logits)
+        return x
 
 # Load clothing model
 clothing_model = models.efficientnet_b0(weights='IMAGENET1K_V1')
 clothing_model.classifier[1] = nn.Linear(clothing_model.classifier[1].in_features, 14)
-clothing_model.load_state_dict(torch.load('Clothing_AI_Model.pt', map_location=torch.device('cpu'), weights_only=True))
+clothing_model.load_state_dict(torch.load('Clothing AI/Clothing_AI_Model_V2.pth', map_location=torch.device('cpu')))
 clothing_model.eval()
 
-# Load color model
-color_model = models.efficientnet_b0(weights='IMAGENET1K_V1')
-color_model.classifier[1] = nn.Linear(color_model.classifier[1].in_features, 23)
-color_model.load_state_dict(torch.load('C:/Users/Aiden/Software_Engineering_Project/github repo/clozetier/color_classifier.pth', map_location='cpu'), strict=False)
+# Load color model and label encoder
+label_encoder = joblib.load('Color_AI_Model/label_encoder_v3.pkl')
+color_model = ColorClassifier()
+color_model.load_state_dict(torch.load('Color_AI_Model/color_classifier_model_v3.pth'))
 color_model.eval()
 
-# Define transformations
+# Define transformations for clothing model
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 ])
 
-# Color categories
-index_to_color = {
-    0: 'Black',
-    1: 'White',
-    2: 'Dark-Gray',
-    3: 'Gray',
-    4: 'Light-Gray',
-    5: 'Dark-Blue',
-    6: 'Blue',
-    7: 'Light-Blue',
-    8: 'Dark-Brown',
-    9: 'Brown',
-    10: 'Cream',
-    11: 'Dark-Red',
-    12: 'Red',
-    13: 'Light-Red',
-    14: 'Pink',
-    15: 'Purple',
-    16: 'Dark-Green',
-    17: 'Green',
-    18: 'Light-Green',
-    19: 'Yellow',
-    20: 'Orange',
-    21: 'Peach',
-    22: 'Gold'
-}
+# Get color labels from the label encoder
+color_labels = label_encoder.classes_
 
-color_labels = list(index_to_color.values())
+def extract_dominant_color(image):
+    """Extract the dominant color from the image using KMeans clustering."""
+    # Center crop to focus on main area of clothing
+    image = F.center_crop(image, output_size=(100, 100))  # Adjust size as needed
+    image_np = np.array(image)
 
-def classify_color(rgb_values):
-    """ Match the RGB values to the closest color category based on ranges. """
-    for color_name, (min_rgb, max_rgb) in index_to_color.items():
-        if all(min_rgb[i] <= rgb_values[i] <= max_rgb[i] for i in range(3)):
-            return color_name
-    
-    return "Unknown"
+    # Reshape image data for clustering
+    reshaped_img = image_np.reshape(-1, 3)
+
+    # Apply KMeans to find the dominant color
+    kmeans = KMeans(n_clusters=1, random_state=0).fit(reshaped_img)
+    dominant_color = kmeans.cluster_centers_[0]  # Dominant color in RGB
+
+    # Ensure values are in the expected range and format for the model
+    dominant_color = torch.tensor(dominant_color, dtype=torch.float32)  # Already [0-255] range
+
+    return dominant_color.unsqueeze(0)  # Shape for model input
+
 
 def run_image_through_models(image_path):
-    # Load and preprocess image
-    image = Image.open(image_path).convert('RGB')
-    input_tensor = transform(image).unsqueeze(0)
-    
+    try:
+        # Load and preprocess image for clothing model
+        image = Image.open(image_path).convert('RGB')
+        input_tensor = transform(image).unsqueeze(0)
+    except Exception as e:
+        print(f"Error loading image: {e}")
+        return None, None
+
     # Get clothing type prediction
     with torch.no_grad():
         clothing_output = clothing_model(input_tensor)
     clothing_result = clothing_output.argmax(dim=1).item()
-    
+
+    # Prepare color input from extracted dominant color
+    color_input = extract_dominant_color(image)
+
     # Get color prediction as a class label
     with torch.no_grad():
-        color_output = color_model(input_tensor)
+        color_output = color_model(color_input)
     color_class_index = color_output.argmax(dim=1).item()
-    color_result = color_labels[color_class_index]  # Map index to color name
+
+    # Ensure index is valid
+    color_result = color_labels[color_class_index] if color_class_index < len(color_labels) else None
     
     return clothing_result, color_result
-
-
-
