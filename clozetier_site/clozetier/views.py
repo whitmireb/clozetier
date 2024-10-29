@@ -22,8 +22,8 @@ def index(request):
             
             # Run the image through the models
             clothing_result, color_result = run_image_through_models(fs.path(filename))
-            labels = ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve', 'pants', 'polo-shirt', 'shoes', 'shorts', 'skirt', 'T-shirt', 'under-shirt']
-            clothing_label = labels[clothing_result]
+            clothing_labels = ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve', 'pants', 'polo-shirt', 'shoes', 'shorts', 'skirt', 'T-shirt', 'under-shirt']
+            clothing_label = clothing_labels[clothing_result]
             
             # Save to database
             uploaded_image = ClothingItem(user=request.user, image=filename, cloth_type=clothing_label, cloth_color=color_result)
