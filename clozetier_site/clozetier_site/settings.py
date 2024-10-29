@@ -78,16 +78,27 @@ WSGI_APPLICATION = 'clozetier_site.wsgi.application'
 
 # sftwr_engnrng
 # 2331231191697592s
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'clozetier_db',
-        'USER': 'sftwr_engnrng',
-        'PASSWORD': '2331231191697592',
-        'HOST': '127.0.0.1',  # Or your MySQL server IP
-        'PORT': '3306',       # Default MySQL port
+
+# $env:USE_SQLITE = "False"
+
+if os.getenv('USE_SQLITE', 'True') == 'True':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),  # File-based SQLite DB
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'clozetier_db',
+            'USER': 'sftwr_engnrng',
+            'PASSWORD': '2331231191697592',
+            'HOST': '127.0.0.1',  # Or your MySQL server IP
+            'PORT': '3306',
+        }
+    }
 
 
 # Password validation
@@ -124,7 +135,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Add this line
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

@@ -1,17 +1,229 @@
-<!-- templates/base.html -->
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <title>{% block title %}Django Auth Tutorial{% endblock %}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CLOZETIER{% endblock %}</title>
+
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .sidebar a:hover {
+            background-color: #555;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        .top-bar {
+            width: 100%;
+            height: 50px;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .top-bar button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin-left: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .top-bar button:hover {
+            background-color: #555;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        /* Container for both boxes */
+        .container {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        /* Closet Box Styling */
+        .closet-box {
+            flex: 1;
+            padding: 20px;
+            border: 2px solid black;
+            border-radius: 8px;
+            background-color: #f4f4f4;
+        }
+
+        .closet-box h2, .outfit-creator-box h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .item-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .item-image {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        /* Outfit Creator Box Styling */
+        .outfit-creator-box {
+            flex: 1;
+            padding: 20px;
+            border: 2px solid black;
+            border-radius: 8px;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .outfit-section {
+            margin-bottom: 15px;
+        }
+
+        .scrollable {
+            max-height: 300px; /* Increased height for visibility */
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 5px;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column; /* Stack items in a single column */
+            align-items: center; /* Center images if desired */
+        }
+
+        .outfit-image {
+            width: 80px;
+            height: 80px;
+            margin: 5px 0; /* Adjusted margin for column layout */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .navigation {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .navigation button {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+
+        .navigation button:hover {
+            background-color: #666;
+        }
+
+      
+
+    </style>
 </head>
 
 <body>
-  <main>
-    {% block content %}
-    {% endblock %}
-  </main>
+    <div class="sidebar">
+        <h2>CLOZETIER</h2>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'about' %}">About</a>
+        <a href="{% url 'index' %}">Clozetier</a> <!-- Updated Clozetier link -->
+        <a href="{% url 'contact' %}">Contact</a>
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            {% if user.is_authenticated %}
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Log Out</button>
+            </form>
+            {% else %}
+            <a href="{% url 'signup' %}"><button>Sign Up</button></a>
+            <a href="{% url 'login' %}"><button>Login</button></a>
+            {% endif %}
+        </div>
+        <div class="content">
+            {% block content %}
+            <!-- Content will be injected here -->
+            {% endblock %}
+        </div>
+    </div>
+
+    <script>
+        let lastFileName = '';
+
+        document.getElementById('file-upload-button').addEventListener('click', function () {
+            document.getElementById('file-upload').click(); // Trigger the file input
+        });
+
+        // Optional: To give feedback if a file has been selected
+        document.getElementById('file-upload').addEventListener('change', function () {
+            if (this.files.length > 0) {
+                // Update button text or provide feedback
+                lastFileName = this.files[0].name
+                document.getElementById('file-upload-button').querySelector('span').textContent = lastFileName;
+            }
+        });
+    </script>
+
+
+
 </body>
 
 </html>
