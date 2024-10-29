@@ -1,45 +1,83 @@
 {% extends 'base.html' %}
-{% block title %}Image Upload{% endblock %}
+{% block title %}Clozetier{% endblock %}
 
 {% block content %}
-    <h1>Upload an Image</h1>
+    <div class="container">
+        <!-- Closet Box -->
+        <div class="closet-box">
+            <h2>Closet</h2>
+            <form method="POST" enctype="multipart/form-data" action="{% url 'index' %}">
+                {% csrf_token %}
+                <button id="file-upload-button" type="button" class="custom-button">
+                    <div class="shadow"></div>
+                    <div class="edge"></div>
+                    <div class="front">
+                        <span>Choose File</span>
+                    </div>
+                </button>
+                <input id="file-upload" type="file" name="image" style="display: none;" required />
 
-    <form method="POST" enctype="multipart/form-data" action="{% url 'index' %}">
-        {% csrf_token %}
-        <button id="file-upload-button" type="button" class="custom-button">
-            <div class="shadow"></div>
-            <div class="edge"></div>
-            <div class="front">
-                <span>Choose File</span>
+                <button id="upload-button" type="submit" class="custom-button">
+                    <div class="shadow"></div>
+                    <div class="edge"></div>
+                    <div class="front">
+                        <span>Upload Image</span>
+                    </div>
+                </button>
+            </form>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <h2>{% if message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}</h2>
+                {% endfor %}
+            {% endif %}
+
+            
+        </div>
+
+        <!-- Outfit Creator Box -->
+        <div class="outfit-creator-box">
+            <h2>Outfit Creator</h2>
+            <div class="outfit-section" id="hats">
+                <h4>Hats</h4>
+                <div class="scrollable">
+                    {% for item in categorized_items.hats %}
+                        <img src="{{ item.image.url }}" alt="Hat" class="outfit-image">
+                    {% empty %}
+                        <p>No hats available.</p>
+                    {% endfor %}
+                </div>
             </div>
-        </button>
-        <input id="file-upload" type="file" name="image" style="display: none;" required />
-
-        <button id="upload-button" type="submit" class="custom-button"> <!-- Add an ID for easier debugging -->
-            <div class="shadow"></div>
-            <div class="edge"></div>
-            <div class="front">
-                <span>Upload Image</span>
+            <div class="outfit-section" id="tops">
+                <h4>Tops</h4>
+                <div class="scrollable">
+                    {% for item in categorized_items.tops %}
+                        <img src="{{ item.image.url }}" alt="Top" class="outfit-image">
+                    {% empty %}
+                        <p>No tops available.</p>
+                    {% endfor %}
+                </div>
             </div>
-        </button>
-    </form>
-
-
-
-    {% if messages %}
-        {% for message in messages %}
-            <h2>{% if message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}</h2>
-        {% endfor %}
-    {% endif %}
-
-    <h1>Your Clothing Items</h1>
-
-    <ul>
-        {% for item in items %}
-            <img src="{{ item.image.url }}" alt="Item Image" style="width: auto; height: 200px;">
-            <li>{{ item.cloth_color }} - {{ item.cloth_type }}</li>
-        {% empty %}
-            <li>You have not uploaded any items yet.</li>
-        {% endfor %}
-    </ul>
+            <div class="outfit-section" id="bottoms">
+                <h4>Bottoms</h4>
+                <div class="scrollable">
+                    {% for item in categorized_items.bottoms %}
+                        <img src="{{ item.image.url }}" alt="Bottom" class="outfit-image">
+                    {% empty %}
+                        <p>No bottoms available.</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="outfit-section" id="shoes">
+                <h4>Shoes</h4>
+                <div class="scrollable">
+                    {% for item in categorized_items.shoes %}
+                        <img src="{{ item.image.url }}" alt="Shoe" class="outfit-image">
+                    {% empty %}
+                        <p>No shoes available.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
