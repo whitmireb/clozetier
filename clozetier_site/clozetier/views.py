@@ -38,4 +38,23 @@ def index(request):
         form = ClothingItemForm()
 
     user_items = ClothingItem.objects.filter(user=request.user)
-    return render(request, 'index.html', {'form': form, 'items': user_items})
+
+# Categorize items
+    categories = {
+        'hats': ['hat'],
+        'tops': ['T-shirt', 'longsleeve', 'polo-shirt', 'hoodie', 'buttondown-shirt', 'blazer'],
+        'bottoms': ['pants', 'shorts', 'skirt'],
+        'shoes': ['shoes'],
+    }
+
+    categorized_items = {
+        'hats': [item for item in user_items if item.cloth_type in categories['hats']],
+        'tops': [item for item in user_items if item.cloth_type in categories['tops']],
+        'bottoms': [item for item in user_items if item.cloth_type in categories['bottoms']],
+        'shoes': [item for item in user_items if item.cloth_type in categories['shoes']],
+    }
+
+    return render(request, 'index.html', {
+        'form': form,
+        'categorized_items': categorized_items,
+        'items': user_items})
