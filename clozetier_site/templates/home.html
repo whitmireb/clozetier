@@ -4,16 +4,35 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-
+<head>
+    <meta charset="UTF-8">
+    <title>Customized Page</title>
+    <style>
+        h1 {
+            font-family: "Comic Sans MS", cursive; /* Comic Sans font */
+            font-size: 28px;
+            color: darkblue;
+        }
+        p {
+            font-family: "Comic Sans MS", cursive; /* Comic Sans font */
+            font-size: 30px;
+            color: #de0707;
+        }
+    </style>
 
     {% if user.is_authenticated %}
         <h1>Welcome to the Page {{ user.username }}!</h1>
         <p>This is the main content area. Use the links on the left to navigate to different pages.</p>
-        
+        <p>Aiden looks like an extremely less buff version of Larry the Lobster</p>
+        <p>Aiden insinuated that I stole his sandwich that I am allergic to.</p>
+        <p>He will pay for this mockery</p>
+        <p>His address is 111 Lake Hollingsworth Dr, Lakeland, FL</p>
+        <p>He will sow what he has reaped at the expense of no one but himself</p>
 
     {% else %}
         <h1>Welcome to the Home Page!</h1>
         <p>You are not logged in.</p>
 
     {% endif %}
+</head>
 {% endblock %}
