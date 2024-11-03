@@ -35,49 +35,6 @@
             
         </div>
 
-        <!-- Outfit Creator Box -->
-        <div class="outfit-creator-box">
-            <h2>Outfit Creator</h2>
-            <div class="outfit-section" id="hats">
-                <h4>Hats</h4>
-                <div class="scrollable">
-                    {% for item in categorized_items.hats %}
-                        <img src="{{ item.image.url }}" alt="Hat" class="outfit-image">
-                    {% empty %}
-                        <p>No hats available.</p>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="outfit-section" id="tops">
-                <h4>Tops</h4>
-                <div class="scrollable">
-                    {% for item in categorized_items.tops %}
-                        <img src="{{ item.image.url }}" alt="Top" class="outfit-image">
-                    {% empty %}
-                        <p>No tops available.</p>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="outfit-section" id="bottoms">
-                <h4>Bottoms</h4>
-                <div class="scrollable">
-                    {% for item in categorized_items.bottoms %}
-                        <img src="{{ item.image.url }}" alt="Bottom" class="outfit-image">
-                    {% empty %}
-                        <p>No bottoms available.</p>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="outfit-section" id="shoes">
-                <h4>Shoes</h4>
-                <div class="scrollable">
-                    {% for item in categorized_items.shoes %}
-                        <img src="{{ item.image.url }}" alt="Shoe" class="outfit-image">
-                    {% empty %}
-                        <p>No shoes available.</p>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
     </div>
+        
 {% endblock %}

@@ -58,3 +58,28 @@ def index(request):
         'form': form,
         'categorized_items': categorized_items,
         'items': user_items})
+
+@login_required
+def outfit_creator_view(request):
+    # Retrieve user items
+    user_items = ClothingItem.objects.filter(user=request.user)
+
+    # Categorize items as done in the `index` view
+    categories = {
+        'hats': ['hat'],
+        'tops': ['T-shirt', 'longsleeve', 'polo-shirt', 'hoodie', 'buttondown-shirt', 'blazer'],
+        'bottoms': ['pants', 'shorts', 'skirt'],
+        'shoes': ['shoes'],
+    }
+
+    categorized_items = {
+        'hats': [item for item in user_items if item.cloth_type in categories['hats']],
+        'tops': [item for item in user_items if item.cloth_type in categories['tops']],
+        'bottoms': [item for item in user_items if item.cloth_type in categories['bottoms']],
+        'shoes': [item for item in user_items if item.cloth_type in categories['shoes']],
+    }
+
+    # Pass categorized items to the outfitCreator template
+    return render(request, 'outfitCreator.html', {
+        'categorized_items': categorized_items
+    })
