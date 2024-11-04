@@ -11,6 +11,15 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
     <style>
+        /* Define color variables */
+        :root {
+            --text: #efeaea;
+            --background: #0a0708;
+            --primary: #000000;
+            --secondary: #465844;
+            --accent: #729384;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -21,19 +30,21 @@
             font-family: Arial, sans-serif;
             display: flex;
             height: 100vh;
+            background-color: var(--background);
+            color: var(--text);
         }
 
         .sidebar {
             width: 250px;
-            background-color: #333;
-            color: white;
+            background-color: var(--primary);
+            color: var(--text);
             padding: 20px;
             display: flex;
             flex-direction: column;
         }
 
         .sidebar a {
-            color: white;
+            color: var(--text);
             text-decoration: none;
             margin: 10px 0;
             padding: 10px;
@@ -41,27 +52,29 @@
         }
 
         .sidebar a:hover {
-            background-color: #555;
+            background-color: var(--secondary);
         }
 
         .main-content {
             flex-grow: 1;
             padding: 20px;
+            background-color: var(--background);
         }
 
         .top-bar {
             width: 100%;
             height: 50px;
-            background-color: #f4f4f4;
+            background-color: var(--secondary);
             display: flex;
             justify-content: flex-end;
             align-items: center;
             padding: 0 20px;
+            color: var(--text);
         }
 
         .top-bar button {
-            background-color: #333;
-            color: white;
+            background-color: var(--accent);
+            color: var(--text);
             border: none;
             padding: 10px 15px;
             margin-left: 10px;
@@ -70,7 +83,7 @@
         }
 
         .top-bar button:hover {
-            background-color: #555;
+            background-color: var(--secondary);
         }
 
         .content {
@@ -88,14 +101,16 @@
         .closet-box {
             flex: 1;
             padding: 20px;
-            border: 2px solid black;
+            border: 3px solid var(--accent);
             border-radius: 8px;
-            background-color: #f4f4f4;
+            background-color: var(--background);
+            color: var(--text);
         }
 
         .closet-box h2, .outfit-creator-box h2 {
             font-size: 24px;
             margin-bottom: 15px;
+            color: var(--text);
         }
 
         .item-list {
@@ -113,7 +128,7 @@
             width: 50px;
             height: 50px;
             margin-right: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid var(--accent);
             border-radius: 4px;
         }
 
@@ -121,9 +136,10 @@
         .outfit-creator-box {
             flex: 1;
             padding: 20px;
-            border: 2px solid black;
+            border: 2px solid var(--primary);
             border-radius: 8px;
-            background-color: #f4f4f4;
+            background-color: var(--background);
+            color: var(--text);
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -134,21 +150,21 @@
         }
 
         .scrollable {
-            max-height: 300px; /* Increased height for visibility */
+            max-height: 300px;
             overflow-y: auto;
-            border: 1px solid #ccc;
+            border: 1px solid var(--accent);
             padding: 5px;
             border-radius: 4px;
             display: flex;
-            flex-direction: column; /* Stack items in a single column */
-            align-items: center; /* Center images if desired */
+            flex-direction: column;
+            align-items: center;
         }
 
         .outfit-image {
             width: 80px;
             height: 80px;
-            margin: 5px 0; /* Adjusted margin for column layout */
-            border: 1px solid #ccc;
+            margin: 5px 0;
+            border: 1px solid var(--accent);
             border-radius: 4px;
         }
 
@@ -159,8 +175,8 @@
         }
 
         .navigation button {
-            background-color: #444;
-            color: white;
+            background-color: var(--secondary);
+            color: var(--text);
             border: none;
             padding: 5px 10px;
             cursor: pointer;
@@ -169,37 +185,36 @@
         }
 
         .navigation button:hover {
-            background-color: #666;
+            background-color: var(--accent);
         }
-        /* drop down menu css stuff  */
+
+        /* Dropdown menu styling */
         .dropdown {
             position: relative;
         }
-        
+
         .dropdown-content {
-            display: none; /* Hidden by default */
+            display: none;
             position: relative;
-            background-color: #333;
+            background-color: var(--primary);
             padding: 10px;
             margin-top: 5px;
             border-radius: 5px;
         }
-        
+
         .dropdown-content a {
             display: block;
-            color: white;
+            color: var(--text);
             text-decoration: none;
-            margin: 8px 0; /* Adds vertical spacing between options */
-            padding: 10px; /* Adds padding inside each option */
-            border-radius: 4px; /* Optional: adds rounded corners */
-            transition: background-color 0.3s; /* Smooth transition on hover */
+            margin: 8px 0;
+            padding: 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
         }
-        
-        .dropdown-content a:hover {
-            background-color: #555; /* Highlight color on hover */
-        }
-        
 
+        .dropdown-content a:hover {
+            background-color: var(--secondary);
+        }
     </style>
 </head>
 
@@ -208,7 +223,7 @@
         <h2>CLOZETIER</h2>
         <a href="{% url 'home' %}">Home</a>
         <a href="{% url 'about' %}">About</a>
-            <!-- Clozetier dropdown menu -->
+        <!-- Clozetier dropdown menu -->
         <div class="dropdown">
             <a href="#" onclick="toggleDropdown(event)">Closet ▼</a>
             <div class="dropdown-content" id="clozetierDropdown">
@@ -221,12 +236,11 @@
     </div>
     <script>
         function toggleDropdown(event) {
-            event.preventDefault(); // Prevent default link behavior
+            event.preventDefault();
             var dropdown = document.getElementById("clozetierDropdown");
             dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         }
     </script>
-    </div>
 
     <div class="main-content">
         <div class="top-bar">
@@ -251,21 +265,16 @@
         let lastFileName = '';
 
         document.getElementById('file-upload-button').addEventListener('click', function () {
-            document.getElementById('file-upload').click(); // Trigger the file input
+            document.getElementById('file-upload').click(); 
         });
 
-        // Optional: To give feedback if a file has been selected
         document.getElementById('file-upload').addEventListener('change', function () {
             if (this.files.length > 0) {
-                // Update button text or provide feedback
                 lastFileName = this.files[0].name
                 document.getElementById('file-upload-button').querySelector('span').textContent = lastFileName;
             }
         });
     </script>
-
-
-
 </body>
 
 </html>
