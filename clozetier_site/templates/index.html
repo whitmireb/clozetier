@@ -3,58 +3,59 @@
 
 {% block content %}
     <div class="container">
-        <!-- Closet Box -->
-        <div class="closet-box">
-            <h1 style="text-align: center;">Add an item</h1>
-            <form method="POST" enctype="multipart/form-data" action="{% url 'index' %}">
-                {% csrf_token %}
-                <div style="display: flex;">
-                    <div style="flex: 1; padding-top: 20px; padding-right: 10px; padding-bottom: 20px;">
-                        <button id="file-upload-button" type="button" class="custom-button" style="float: right;">
-                            <div class="shadow"></div>
-                            <div class="edge"></div>
-                            <div class="front">
-                                <span>Choose File</span>
-                            </div>
-                        </button>
-                    </div>
-                    <input id="file-upload" type="file" name="image" style="display: none;" required />
-
-                    <div style="flex: 1; padding-top: 20px; padding-bottom: 20px; padding-left: 10px;">
-                        <button id="upload-button" type="submit" class="custom-button">
-                            <div class="shadow"></div>
-                            <div class="edge"></div>
-                            <div class="front">
-                                <span>Upload Image</span>
-                            </div>
-                        </button>
-                    </div>
+    <!-- Closet Box -->
+    <div class="closet-box">
+        <h1 style="text-align: center;">Add an item</h1>
+        <form method="POST" enctype="multipart/form-data" action="{% url 'index' %}">
+            {% csrf_token %}
+            <div style="display: flex;">
+                <div style="flex: 1; padding-top: 20px; padding-right: 10px; padding-bottom: 20px;">
+                    <button id="file-upload-button" type="button" class="custom-button" style="float: right;">
+                        <div class="shadow"></div>
+                        <div class="edge"></div>
+                        <div class="front">
+                            <span>Choose File</span>
+                        </div>
+                    </button>
                 </div>
-            </form>
-            
-            {% if uploaded_image_url %}
-            <img src="{{ uploaded_image_url }}" alt="Uploaded Image" style="display: block; width: auto; height: 200px; margin-left: auto; margin-right: auto; padding-bottom: 20px;">
-
-            <form method="POST" action="{% url 'save_item' %}">
-                {% csrf_token %}
-                <input type="hidden" name="image" value="{{ uploaded_image_url|cut:"media/" }}">
-                <h2 for="predicted-type">Predicted Clothing Type:</h2>
-            
-                <select class="styled-select" id="predicted-type", name="predicted_type">
-                    {% for label in clothing_labels %}
-                    <option value="{{ label }}" {% if predicted_type == label %} selected {% endif %}>{{ label }}</option>
-                    {% endfor %}
-                </select>
-           
-
-                
-                <h2>Predicted Color:</h2>
-                <select id="predicted-color" name="predicted_color">
-                    {% for label in color_labels %}
-                    <option value="{{ label }}" {% if predicted_color == label %} selected {% endif %}>{{ label }}</option>
-                    {% endfor %}
-                </select>
-                <div style="padding:20px">
+                <input id="file-upload" type="file" name="image" style="display: none;" required />
+    
+                <div style="flex: 1; padding-top: 20px; padding-bottom: 20px; padding-left: 10px;">
+                    <button id="upload-button" type="submit" class="custom-button">
+                        <div class="shadow"></div>
+                        <div class="edge"></div>
+                        <div class="front">
+                            <span>Upload Image</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </form>
+    
+        {% if uploaded_image_url %}
+        <img src="{{ uploaded_image_url }}" alt="Uploaded Image"
+            style="display: block; width: auto; height: 200px; margin-left: auto; margin-right: auto; padding-bottom: 20px;">
+    
+        <form method="POST" action="{% url 'save_item' %}">
+            {% csrf_token %}
+            <input type="hidden" name="image" value="{{ uploaded_image_url|cut:"media/" }}">
+            <h2 for="predicted-type">Predicted Clothing Type:</h2>
+    
+            <select class="styled-select" id="predicted-type" , name="predicted_type">
+                {% for label in clothing_labels %}
+                <option value="{{ label }}" {% if predicted_type == label %} selected {% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+    
+    
+    
+            <h2>Predicted Color:</h2>
+            <select id="predicted-color" name="predicted_color">
+                {% for label in color_labels %}
+                <option value="{{ label }}" {% if predicted_color == label %} selected {% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <div style="padding:20px">
                 <button id="save-button" type="submit" class="custom-button">
                     <div class="shadow"></div>
                     <div class="edge"></div>
@@ -62,11 +63,9 @@
                         <span>Save Image</span>
                     </div>
                 </button>
-                </div>
-            </form>
-            {% endif %}
-
-        </div>
+            </div>
+        </form>
+        {% endif %}
 
     </div>
         
