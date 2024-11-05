@@ -7,7 +7,7 @@ from django.core.files.storage import FileSystemStorage
 from .forms import ClothingItemForm
 from .models import ClothingItem
 from django.conf import settings
-from .model_utils import run_image_through_models  # Ensure this name matches
+from .model_utils import run_image_through_models
 
 @login_required
 def index(request):
@@ -20,26 +20,54 @@ def index(request):
             filename = fs.save(image.name, image)
             uploaded_image_url = fs.url(filename)
             
-            # Run the image through the models
+            # Run the image through the model
             clothing_result, color_result = run_image_through_models(fs.path(filename))
             clothing_labels = ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve', 'pants', 'polo-shirt', 'shoes', 'shorts', 'skirt', 'T-shirt', 'under-shirt']
+            color_labels = ['Black', 'Blue', 'Brown', 'Cream', 'Dark-Blue', 'Dark-Brown',
+       'Dark-Gray', 'Dark-Green', 'Dark-Red', 'Gold', 'Gray', 'Green',
+       'Light-Blue', 'Light-Gray', 'Light-Green', 'Light-Red', 'Orange',
+       'Peach', 'Pink', 'Purple', 'Red', 'White', 'Yellow']
             clothing_label = clothing_labels[clothing_result]
             
             # Save to database
-            uploaded_image = ClothingItem(user=request.user, image=filename, cloth_type=clothing_label, cloth_color=color_result)
-            uploaded_image.save()
+            # uploaded_image = ClothingItem(user=request.user, image=filename, cloth_type=clothing_label, cloth_color=color_result)
+            # uploaded_image.save()
 
-            messages.success(request, f'Successfully uploaded image:<br><img src="{uploaded_image_url}" style="width:auto;height:300px;">', extra_tags='safe')
-            messages.info(request, f'Clothing type detected: {clothing_label}, Color detected: {color_result}')
-            
-            return redirect('index')
+            user_items = ClothingItem.objects.filter(user=request.user)
+
+            # Categorize items
+            categories = {
+                'hats': ['hat'],
+                'tops': ['T-shirt', 'longsleeve', 'polo-shirt', 'hoodie', 'buttondown-shirt', 'blazer'],
+                'bottoms': ['pants', 'shorts', 'skirt'],
+                'shoes': ['shoes'],
+            }
+
+            categorized_items = {
+                'hats': [item for item in user_items if item.cloth_type in categories['hats']],
+                'tops': [item for item in user_items if item.cloth_type in categories['tops']],
+                'bottoms': [item for item in user_items if item.cloth_type in categories['bottoms']],
+                'shoes': [item for item in user_items if item.cloth_type in categories['shoes']],
+            }
+
+            # Pass to context directly (optional)
+            context = {
+                'predicted_type': clothing_label,
+                'predicted_color': color_result,
+                'uploaded_image_url': uploaded_image_url,
+                'clothing_labels': clothing_labels,
+                'color_labels': color_labels,
+                'categorized_items': categorized_items,
+                'form': form,
+            }
+            return render(request, 'index.html', context)
 
     else:
         form = ClothingItemForm()
 
     user_items = ClothingItem.objects.filter(user=request.user)
 
-# Categorize items
+    # Categorize items
     categories = {
         'hats': ['hat'],
         'tops': ['T-shirt', 'longsleeve', 'polo-shirt', 'hoodie', 'buttondown-shirt', 'blazer'],
