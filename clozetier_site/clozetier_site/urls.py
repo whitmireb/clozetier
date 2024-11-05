@@ -24,18 +24,12 @@ from accounts import views  # Import views from accounts app
 urlpatterns = [
     # Admin site path
     path('admin/', admin.site.urls),
-    
-    # Authentication-related paths
-    path("accounts/", include("accounts.urls")),  # Custom accounts app URL configuration
-    path("accounts/", include("django.contrib.auth.urls")),  # Django auth URLs (login, logout, password management)
-
-    # Clozetier-specific URLs (any other URLs defined in the clozetier app)
-    path("clozetier/", include("clozetier.urls")),
-    
-    # Main site pages
-    path("", TemplateView.as_view(template_name="home.html"), name="home"),  # Home page
-    path('about/', TemplateView.as_view(template_name='about.html'), name='about'),  # About page
-    path('contact/', TemplateView.as_view(template_name='contact.html'), name='contact'),  # Contact page
+    path("accounts/", include("accounts.urls")), 
+    path("accounts/", include("django.contrib.auth.urls")),
+    path('clozetier/', include('clozetier.urls')),
+    path("", TemplateView.as_view(template_name="home.html"), name="home"),
+    path('about/', TemplateView.as_view(template_name='about.html'), name='about'),
+    path('contact/', TemplateView.as_view(template_name='contact.html'), name='contact'),
 ]
 
 # Serving media files during development

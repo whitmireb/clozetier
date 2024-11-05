@@ -6,6 +6,9 @@ from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
-    path("", views.index, name="index"),
+    path('upload/', views.index, name='uploadPage'),
+    path("save_item", views.save_item, name="save_item"),
+    path('outfit-creator/', views.outfit_creator_view, name='outfitCreator'),  # Add this line
+    path('', views.index, name='index'),  # Main index page
     # path('upload/', views.image_upload, name='image_upload'),
 ]
