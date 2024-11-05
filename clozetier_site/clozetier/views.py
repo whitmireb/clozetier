@@ -88,6 +88,20 @@ def index(request):
         'items': user_items})
 
 @login_required
+def save_item(request):
+    if request.method == 'POST':
+        image = request.POST['image']
+        predicted_type = request.POST['predicted_type']
+        predicted_color = request.POST['predicted_color']
+        
+        # Create and save the ClothingItem instance
+        uploaded_image = ClothingItem(user=request.user, image=image, cloth_type=predicted_type, cloth_color=predicted_color)
+        uploaded_image.save()
+
+        messages.success(request, 'Item successfully saved!')
+        return redirect('index')
+
+@login_required
 def outfit_creator_view(request):
     # Retrieve user items
     user_items = ClothingItem.objects.filter(user=request.user)
