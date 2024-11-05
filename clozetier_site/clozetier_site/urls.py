@@ -19,8 +19,10 @@ from django.urls import path, include
 from django.views.generic.base import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
+from accounts import views  # Import views from accounts app
 
 urlpatterns = [
+    # Admin site path
     path('admin/', admin.site.urls),
     path("accounts/", include("accounts.urls")), 
     path("accounts/", include("django.contrib.auth.urls")),
@@ -30,5 +32,13 @@ urlpatterns = [
     path('contact/', TemplateView.as_view(template_name='contact.html'), name='contact'),
 ]
 
+# Serving media files during development
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Additional URLs for accounts app
+urlpatterns += [
+    path("profile/", views.profile, name="profile"),  # User profile
+    path("profile/edit/", views.edit_profile, name="edit_profile"),  # Edit user profile
+    path("profile/activity/", views.activity_history, name="activity_history"),  # User activity history
+]

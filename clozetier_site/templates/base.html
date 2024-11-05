@@ -215,6 +215,23 @@
         .dropdown-content a:hover {
             background-color: var(--secondary);
         }
+        /* Style for My Profile link at the bottom of the sidebar */
+        .profile-link {
+            margin-top: auto;
+            padding-top: 20px;
+        }
+
+        .profile-link a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .profile-link a:hover {
+            background-color: #555;
+        }
     </style>
 </head>
 
@@ -233,6 +250,11 @@
             </div>
         </div>
         <a href="{% url 'contact' %}">Contact</a>
+
+        <!-- My Profile link at the bottom -->
+        <div class="profile-link">
+            <a href="{% url 'profile' %}">My Profile</a>
+        </div>
     </div>
     <script>
         function toggleDropdown(event) {
@@ -275,6 +297,8 @@
             }
         });
     </script>
+
 </body>
 
 </html>
+

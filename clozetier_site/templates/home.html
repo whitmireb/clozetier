@@ -6,41 +6,127 @@
 {% block content %}
 <head>
     <meta charset="UTF-8">
-    <title>Customized Page</title>
+    <title>Home - Clozetier</title>
     <style>
-        h1 {
-            font-family: "Comic Sans MS", cursive; /* Comic Sans font */
-            font-size: 28px;
-            color: #fae6e5;
+        /* Background Gradient */
+        body {
+            background: linear-gradient(to bottom right, #f0f4f8, #d9e2ec);
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex; /* Use flexbox for layout */
+            min-height: 100vh; /* Ensure body takes at least full height */
         }
+
+        /* Main Content Styles */
+        .main-content {
+            flex-grow: 1; /* Take remaining space */
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center content vertically */
+            align-items: center; /* Center content horizontally */
+        }
+
+        /* Hero Section Styles */
+        .hero {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-family: "Times New Roman", cursive;
+            font-size: 32px;
+            color: darkblue;
+            margin-bottom: 10px;
+        }
+
         p {
-            font-family: "Comic Sans MS", cursive; /* Comic Sans font */
-            font-size: 30px;
-            color: #fae6e5;
+            font-family: "Comic Sans MS", cursive;
+            font-size: 24px;
+            color: #de0707;
+            margin-bottom: 30px;
+        }
+
+        /* CTA Buttons */
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            padding: 12px 25px;
+            color: #fff;
+            background-color: #007bff; /* Button color */
+            text-decoration: none;
+            margin: 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .cta-button:hover {
+            background-color: #004080; /* Darker on hover */
+            transform: scale(1.05);
+        }
+
+        /* Additional Information Section */
+        .info {
+            font-size: 16px;
+            margin: 20px 0;
+            color: #333;
+            text-align: center;
+        }
+
+        /* Footer Style */
+        .footer {
+            text-align: center;
+            padding: 10px 0;
+            background-color: #d9e2ec;
+            width: 100%;
+            position: relative;
+            bottom: 0;
+        }
+
+        .footer p {
+            margin: 0;
+            color: #555;
+            font-size: 14px;
         }
     </style>
-
-    {% if user.is_authenticated %}
-        <h1>Welcome to the Page {{ user.username }}!</h1>
-        <p>This is the main content area. Use the links on the left to navigate to different pages.</p>
-        <p>Aiden looks like an extremely less buff version of Larry the Lobster</p>
-        <p>Aiden insinuated that I stole his sandwich that I am allergic to.</p>
-        <p>He will pay for this mockery</p>
-        <p>His address is 111 Lake Hollingsworth Dr, Lakeland, FL</p>
-        <p>He will sow what he has reaped at the expense of no one but himself</p>
-        <p>I would sooner wrestle a hog in muck than stoop so low as to take from the likes of you</p>
-        <p>You addle-pated, moon-calf! I wouldn’t touch your belongings if they were dipped in gold and wrapped in silk!</p>
-        <p>A pox upon your forked tongue! I’d no sooner swipe from you than I’d borrow fleas from a mangy hound!</p>
-        <p>If you weren’t as dim as a doused lantern, you’d see no thief would sully themselves with your tatty scraps!</p>
-        <p>I wouldn't lower myself to steal from you, even if the crown jewels lay atop your addled head!</p>
-        <p>If thievery were my trade, I’d steal from nobility, not some lout with a coin purse lighter than a feather!</p>
-        <p>Had I wanted rubbish, I’d have gone to the town’s dung heap rather than raid your belongings</p>
-        <p>Such nerve from a simpleton whose fortune couldn’t fill a thimble</p>
-
-    {% else %}
-        <h1>Welcome to the Home Page!</h1>
-        <p>You are not logged in.</p>
-
-    {% endif %}
 </head>
+
+<div class="main-content">
+    {% if user.is_authenticated %}
+        <div class="hero">
+            <h1>Welcome to Clozetier, {{ user.username }}!</h1>
+            <p>Organize, Style, and Make the Most of Your Wardrobe with AI Assistance.</p>
+            <div class="cta-buttons">
+                <a href="{% url 'outfitCreator' %}" class="cta-button">Explore Your Closet</a>
+            </div>
+        </div>
+    {% else %}
+        <div class="hero">
+            <h1>Welcome to Clozetier!</h1>
+            <p>Your AI-Powered Digital Wardrobe for Smart Styling</p>
+            <div class="cta-buttons">
+                <a href="{% url 'register' %}" class="cta-button">Get Started</a>
+                <a href="{% url 'login' %}" class="cta-button">Log In</a>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Additional Information Section -->
+    <div class="info">
+        <p>Clozetier is designed to help you manage your wardrobe effectively. With our AI-driven platform, you can easily organize your clothing, get style suggestions, and ensure you always look your best.</p>
+        <p>Our mission is to simplify your fashion choices, save you time, and enhance your personal style.</p>
+        <p>Join us on your journey to a more organized and stylish wardrobe!</p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2024 Clozetier. All Rights Reserved.</p>
+    </div>
+</div>
+
 {% endblock %}
