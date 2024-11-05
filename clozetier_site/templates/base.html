@@ -172,8 +172,23 @@
             background-color: #666;
         }
 
-      
+        /* Style for My Profile link at the bottom of the sidebar */
+        .profile-link {
+            margin-top: auto;
+            padding-top: 20px;
+        }
 
+        .profile-link a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .profile-link a:hover {
+            background-color: #555;
+        }
     </style>
 </head>
 
@@ -184,6 +199,11 @@
         <a href="{% url 'about' %}">About</a>
         <a href="{% url 'index' %}">Clozetier</a> <!-- Updated Clozetier link -->
         <a href="{% url 'contact' %}">Contact</a>
+
+        <!-- My Profile link at the bottom -->
+        <div class="profile-link">
+            <a href="{% url 'profile' %}">My Profile</a>
+        </div>
     </div>
 
     <div class="main-content">
@@ -221,8 +241,6 @@
             }
         });
     </script>
-
-
 
 </body>
 
