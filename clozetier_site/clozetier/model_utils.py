@@ -42,7 +42,6 @@ transform = transforms.Compose([
 
 # Get color labels from the label encoder
 color_labels = label_encoder.classes_
-
 def extract_dominant_color(image):
     """Extract the dominant color from the image using KMeans clustering."""
     # Center crop to focus on main area of clothing
