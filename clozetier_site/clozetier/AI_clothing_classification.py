@@ -23,28 +23,3 @@ color_selection_comparison_dictionary = {
     'Peach': ['Peach', 'White', 'Cream', 'Gray', 'Light-Gray', 'Pink', 'Light-Blue', 'Light-Red', 'Yellow'],
     'Gold': ['Gold', 'White', 'Black', 'Cream', 'Gray', 'Dark-Green', 'Brown', 'Yellow', 'Dark-Gray']
 }
-
-
-#assuming that we are taking into account that there is only pizza that is only considered to be a pizza not inclusing hot pockets adn shit
-#now we are assuming the population and assuming that children under 3 are not eating pizza
-#now the school system. pizza is servered to alot of studetns in the system.
-#and pizza is cheap so alot of people are considered eating
-#now we are assumign the stardard pizza is 8 inches wide which we will configure to be about .75 sq feet per pizza.
-#now we are saying that the average family will eat 50 standard 8 inch pizzas per year exclusing edge cases of people with lactose intolerance, too young to digest pizza and other stuff
-#finally we will assume there are 350 million people in teh united states. and we will do 350 million * 50 = 1.7 billion *.75 sq feet = 1.35 billion sqfeet
-
-
-# for i in range(1, 101):
-#     if i % 3 == 0 and i % 5 == 0:
-#         print("baby yoda")
-#     elif i % 3 == 0:
-#         print("baby")
-#     elif i % 5 == 0:
-#         print("yoda")
-#     else:
-#         print(i)
-
-
-# list = [1,2,4,3,5,6]
-# smallest_num, largest_num = min(list), max(list)
-# print(largest_num - smallest_num)
