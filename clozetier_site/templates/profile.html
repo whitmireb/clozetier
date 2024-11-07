@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+    <header>
+        <h1>My Profile</h1>
+    </header>
+    <main>
+        <h2>Welcome, {{ user.username }}!</h2>
+        <p>Email: {{ user.email }}</p>
+        <p>This is your profile page where you can:</p>
+        <ul>
+            <li>View your account details</li>
+            <li>Edit your profile information</li>
+            <li>Change your password</li>
+            <li>View your activity history</li>
+            <li>Log out of your account</li>
+        </ul>
+        <p>Use the links below to navigate:</p>
+        <footer>
+            <p><a href="{% url 'logout' %}">Logout</a></p>
+            <p><a href="{% url 'edit_profile' %}">Edit Profile</a></p>
+            <p><a href="{% url 'activity_history' %}">View Activity History</a></p>
+        </footer>
+    </main>
+{% endblock %}
