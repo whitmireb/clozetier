@@ -8,6 +8,8 @@ from .forms import ClothingItemForm
 from .models import ClothingItem
 from django.conf import settings
 from .model_utils import run_image_through_models
+from django.shortcuts import render, get_object_or_404
+from .AI_clothing_classification import get_recommended_clothing
 
 @login_required
 def index(request):
@@ -22,16 +24,19 @@ def index(request):
             
             # Run the image through the model
             clothing_result, color_result = run_image_through_models(fs.path(filename))
-            clothing_labels = ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve', 'pants', 'polo-shirt', 'shoes', 'shorts', 'skirt', 'T-shirt', 'under-shirt']
+            
+            clothing_labels = ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve', 
+                               'pants', 'polo-shirt', 'shoes', 'shorts', 'skirt', 'T-shirt', 'under-shirt']
+            
             color_labels = ['Black', 'Blue', 'Brown', 'Cream', 'Dark-Blue', 'Dark-Brown',
-       'Dark-Gray', 'Dark-Green', 'Dark-Red', 'Gold', 'Gray', 'Green',
-       'Light-Blue', 'Light-Gray', 'Light-Green', 'Light-Red', 'Orange',
-       'Peach', 'Pink', 'Purple', 'Red', 'White', 'Yellow']
+                            'Dark-Gray', 'Dark-Green', 'Dark-Red', 'Gold', 'Gray', 'Green',
+                            'Light-Blue', 'Light-Gray', 'Light-Green', 'Light-Red', 'Orange',
+                            'Peach', 'Pink', 'Purple', 'Red', 'White', 'Yellow']
+
+
             clothing_label = clothing_labels[clothing_result]
             
             # Save to database
-            # uploaded_image = ClothingItem(user=request.user, image=filename, cloth_type=clothing_label, cloth_color=color_result)
-            # uploaded_image.save()
 
             user_items = ClothingItem.objects.filter(user=request.user)
 
@@ -124,4 +129,37 @@ def outfit_creator_view(request):
     # Pass categorized items to the outfitCreator template
     return render(request, 'outfitCreator.html', {
         'categorized_items': categorized_items
+    })
+
+def select_clothing(request):
+    clothing_items = ClothingItem.objects.all()
+    clothing_labels = ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve', 
+                       'pants', 'polo-shirt', 'shoes', 'shorts', 'skirt', 'T-shirt', 'under-shirt']
+
+    return render(request, 'select_clothing_image.html', {
+        'clothing_items': clothing_items,
+        'clothing_labels': clothing_labels
+    })
+
+    from django.shortcuts import render
+
+def recommendation_view(request):
+    # Pass any context data needed for the template
+    return render(request, 'AIrecommendation.html', {
+        # Add any necessary context here
+        'clothing_labels': ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve',
+                            'pants', 'polo-shirt', 'shoes', 'shorts', 'skirt', 'T-shirt', 'under-shirt']
+    })
+
+
+def selected_item_view(request):
+    # Retrieve data passed from the previous page (e.g., via POST or GET)
+    item_image_url = request.GET.get('image_url', '')  # or request.POST for POST method
+    item_type = request.GET.get('type', 'Unknown')
+    item_color = request.GET.get('color', 'Unknown')
+
+    return render(request, 'selected_item.html', {
+        'item_image_url': item_image_url,
+        'item_type': item_type,
+        'item_color': item_color,
     })

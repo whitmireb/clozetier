@@ -76,3 +76,22 @@
 .custom-button .front span {
     user-select: none;
 }
+
+/* Center the image display container */
+#image-display-container {
+    display: flex;
+    justify-content: center; /* Horizontally center */
+    align-items: center;     /* Vertically center */
+    height: 70vh;            /* Adjust height to your needs */
+    margin-top: 20px;        /* Optional: space from the top */
+}
+
+/* Center the image itself */
+#displayed-image {
+    max-width: 100%;         /* Allow image to be responsive */
+    max-height: 100%;        /* Limit the image height */
+    object-fit: contain;     /* Ensures the image fits within the bounds */
+    border: 3px solid #ccc;
+    padding: 10px;
+    transition: transform 0.2s;
+}

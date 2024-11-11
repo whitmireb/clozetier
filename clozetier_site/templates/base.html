@@ -246,6 +246,7 @@
             <div class="dropdown-content" id="clozetierDropdown">
                 <a href="{% url 'index' %}">Upload</a>
                 <a href="{% url 'outfitCreator' %}">Outfit Creator</a>
+                <a href="{% url 'AIRecommendation' %}">AI Reccomendation</a>
                 {% comment %} <a href="{% url 'option2' %}"></a> {% endcomment %}
             </div>
         </div>
@@ -278,7 +279,6 @@
         </div>
         <div class="content">
             {% block content %}
-            <!-- Content will be injected here -->
             {% endblock %}
         </div>
     </div>
