@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Link to a CSS file -->
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
     <header>
         <h1>My Profile</h1>
     </header>
@@ -29,5 +24,4 @@
             <p><a href="{% url 'activity_history' %}">View Activity History</a></p>
         </footer>
     </main>
-</body>
-</html>
+{% endblock %}
