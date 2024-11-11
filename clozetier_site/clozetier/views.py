@@ -174,3 +174,34 @@ def delete_item(request):
 
         messages.success(request, 'Item deleted successfully!')
         return redirect('clozet')  # Redirect back to the outfit creator view
+    
+def select_clothing(request):
+    clothing_items = ClothingItem.objects.all()
+    clothing_labels = ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve', 
+                       'pants', 'polo-shirt', 'shoes', 'shorts', 'skirt', 'T-shirt', 'under-shirt']
+
+    return render(request, 'select_clothing_image.html', {
+        'clothing_items': clothing_items,
+        'clothing_labels': clothing_labels
+    })
+
+def recommendation_view(request):
+    # Pass any context data needed for the template
+    return render(request, 'AIrecommendation.html', {
+        # Add any necessary context here
+        'clothing_labels': ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve',
+                            'pants', 'polo-shirt', 'shoes', 'shorts', 'skirt', 'T-shirt', 'under-shirt']
+    })
+
+
+def selected_item_view(request):
+    # Retrieve data passed from the previous page (e.g., via POST or GET)
+    item_image_url = request.GET.get('image_url', '')  # or request.POST for POST method
+    item_type = request.GET.get('type', 'Unknown')
+    item_color = request.GET.get('color', 'Unknown')
+
+    return render(request, 'selected_item.html', {
+        'item_image_url': item_image_url,
+        'item_type': item_type,
+        'item_color': item_color,
+    })
