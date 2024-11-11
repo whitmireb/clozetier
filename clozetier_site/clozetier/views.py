@@ -141,8 +141,6 @@ def select_clothing(request):
         'clothing_labels': clothing_labels
     })
 
-    from django.shortcuts import render
-
 def recommendation_view(request):
     # Pass any context data needed for the template
     return render(request, 'AIrecommendation.html', {
