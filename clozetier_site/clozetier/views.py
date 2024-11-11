@@ -2,12 +2,13 @@
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.files.storage import FileSystemStorage
 from .forms import ClothingItemForm
 from .models import ClothingItem
 from django.conf import settings
 from .model_utils import run_image_through_models
+from django.http import JsonResponse
 
 @login_required
 def index(request):
@@ -150,3 +151,26 @@ def outfit_creator_view(request):
     return render(request, 'outfitCreator.html', {
         'categorized_items': categorized_items
     })
+
+def get_item_details(request, item_id):
+    # Retrieve the item or return 404 if it doesn't exist
+    item = get_object_or_404(ClothingItem, pk=item_id)
+
+    # Return a JSON response if you're using fetch for dynamic content
+    return JsonResponse({
+        'cloth_type': item.cloth_type,
+        'cloth_color': item.cloth_color,
+        'image_url': item.image.url
+    })
+
+@login_required
+def delete_item(request):
+    if request.method == 'POST':
+        item_id = request.POST.get('item_id')
+        item = get_object_or_404(ClothingItem, id=item_id, user=request.user)
+
+        # Delete the item
+        item.delete()
+
+        messages.success(request, 'Item deleted successfully!')
+        return redirect('clozet')  # Redirect back to the outfit creator view

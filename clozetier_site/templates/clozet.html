@@ -1,67 +1,113 @@
 <!-- outfitCreator.html -->
-{% extends 'base.html' %}
-
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 <h1>Clozet</h1>
 
 <div class="outfit-section">
-    <h3>Hats</h3>
-    <div class="scrollable">
-        {% for item in categorized_items.hats %}
-            <img src="{{ item.image.url }}" alt="Hat" class="outfit-image">
-        {% empty %}
-            <p>No hats available.</p>
-        {% endfor %}
-    </div>
+  <h3>Hats</h3>
+  <div class="scrollable">
+    {% for item in categorized_items.hats %}
+    <img
+      src="{{ item.image.url }}"
+      alt="Hat"
+      class="outfit-image"
+      onclick="showPanel({{ item.id }})"
+    />
+    {% empty %}
+    <p>No hats available.</p>
+    {% endfor %}
+  </div>
 </div>
 
 <div class="outfit-section">
-    <h3>Tops</h3>
-    <div class="scrollable">
-        {% for item in categorized_items.tops %}
-            <img src="{{ item.image.url }}" alt="Top" class="outfit-image">
-        {% empty %}
-            <p>No tops available.</p>
-        {% endfor %}
-    </div>
+  <h3>Tops</h3>
+  <div class="scrollable">
+    {% for item in categorized_items.tops %}
+    <img
+      src="{{ item.image.url }}"
+      alt="Top"
+      class="outfit-image"
+      onclick="showPanel({{ item.id }})"
+    />
+    {% empty %}
+    <p>No tops available.</p>
+    {% endfor %}
+  </div>
 </div>
 
 <div class="outfit-section">
-    <h3>Bottoms</h3>
-    <div class="scrollable">
-        {% for item in categorized_items.bottoms %}
-            <img src="{{ item.image.url }}" alt="Bottom" class="outfit-image">
-        {% empty %}
-            <p>No bottoms available.</p>
-        {% endfor %}
-    </div>
+  <h3>Bottoms</h3>
+  <div class="scrollable">
+    {% for item in categorized_items.bottoms %}
+    <img
+      src="{{ item.image.url }}"
+      alt="Bottom"
+      class="outfit-image"
+      onclick="showPanel({{ item.id }})"
+    />
+    {% empty %}
+    <p>No bottoms available.</p>
+    {% endfor %}
+  </div>
 </div>
 
 <div class="outfit-section">
-    <h3>Shoes</h3>
-    <div class="scrollable">
-        {% for item in categorized_items.shoes %}
-            <img src="{{ item.image.url }}" alt="Shoes" class="outfit-image">
-        {% empty %}
-            <p>No shoes available.</p>
-        {% endfor %}
-    </div>
+  <h3>Shoes</h3>
+  <div class="scrollable">
+    {% for item in categorized_items.shoes %}
+    <img
+      src="{{ item.image.url }}"
+      alt="Shoes"
+      class="outfit-image"
+      onclick="showPanel({{ item.id }})"
+    />
+    {% empty %}
+    <p>No shoes available.</p>
+    {% endfor %}
+  </div>
 </div>
+
+<!-- Side panel -->
+<div id="side-panel" class="side-panel">
+  <div id="side-panel-content">
+    <button onclick="closePanel()">Close</button>
+    <img id="panel-image" src="" alt="Selected Item" />
+    <div id="item-details">
+      <p id="item-type"></p>
+      <p id="item-color"></p>
+      <form method="POST" action="{% url 'delete_item' %}">
+        {% csrf_token %}
+        <input type="hidden" name="item_id" id="item-id" />
+        <button type="submit">Delete</button>
+      </form>
+    </div>
+  </div>
+</div>
+
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Select all elements with the class 'scrollable'
-        const scrollables = document.querySelectorAll(".scrollable");
+  // Show the side panel when an image is clicked
+  function showPanel(itemId) {
+    // Fetch the item details from Django views using an Ajax request
+    fetch("/clozetier/get_item_details/" + itemId + "/")
+      .then((response) => response.json())
+      .then((data) => {
+        // Populate the side panel with the data
+        document.getElementById("panel-image").src = data.image_url;
+        document.getElementById(
+          "item-type"
+        ).textContent = `Type: ${data.cloth_type}`;
+        document.getElementById(
+          "item-color"
+        ).textContent = `Color: ${data.cloth_color}`;
+        document.getElementById("item-id").value = itemId;
 
-        scrollables.forEach(scrollable => {
-            // Add the scroll event listener to each element
-            scrollable.addEventListener("wheel", function (event) {
-                // Redirect vertical scroll to horizontal scroll
-                if (event.deltaY !== 0) {
-                    scrollable.scrollLeft += event.deltaY; // Adjust for scroll speed if needed
-                    event.preventDefault(); // Prevent default vertical scrolling
-                }
-            });
-        });
-    });
+        // Show the side panel
+        document.getElementById("side-panel").style.display = "block";
+      });
+  }
+
+  // Close the side panel
+  function closePanel() {
+    document.getElementById("side-panel").style.display = "none";
+  }
 </script>
 {% endblock %}

@@ -1,306 +1,342 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}CLOZETIER{% endblock %}</title>
 
     <!-- Link to external CSS file -->
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 
     <style>
-        /* Define color variables */
-        :root {
-            --text: #203239;
-            --alt_text: #EEEDDE;
-            --background: #EEEDDE;
-            --primary: #141E27;
-            --secondary: #203239;
-            --accent: #E0DDAA;
-        }
+      /* Define color variables */
+      :root {
+        --text: #203239;
+        --alt_text: #eeedde;
+        --background: #eeedde;
+        --primary: #141e27;
+        --secondary: #203239;
+        --accent: #e0ddaa;
+      }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            height: 100vh;
-            background-color: var(--background);
-            color: var(--text);
-        }
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        height: 100vh;
+        background-color: var(--background);
+        color: var(--text);
+      }
 
-        .sidebar {
-            width: 250px;
-            background-color: var(--primary);
-            color: var(--alt_text);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-        }
+      .sidebar {
+        width: 250px;
+        background-color: var(--primary);
+        color: var(--alt_text);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+      }
 
-        .sidebar a {
-            color: var(--alt_text);
-            text-decoration: none;
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 5px;
-        }
+      .sidebar a {
+        color: var(--alt_text);
+        text-decoration: none;
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 5px;
+      }
 
-        .sidebar a:hover {
-            background-color: var(--secondary);
-        }
+      .sidebar a:hover {
+        background-color: var(--secondary);
+      }
 
-        .main-content {
-            flex-grow: 1;
-            padding: 20px;
-            background-color: var(--background);
-        }
+      .main-content {
+        flex-grow: 1;
+        padding: 20px;
+        background-color: var(--background);
+      }
 
-        .top-bar {
-            width: 100%;
-            height: 50px;
-            background-color: var(--secondary);
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 0 20px;
-            color: var(--text);
-        }
+      .top-bar {
+        width: 100%;
+        height: 50px;
+        background-color: var(--secondary);
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 0 20px;
+        color: var(--text);
+      }
 
-        .top-bar button {
-            background-color: var(--accent);
-            color: var(--text);
-            border: none;
-            padding: 10px 15px;
-            margin-left: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
+      .top-bar button {
+        background-color: var(--accent);
+        color: var(--text);
+        border: none;
+        padding: 10px 15px;
+        margin-left: 10px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
 
-        .top-bar button:hover {
-            background-color: var(--secondary);
-        }
+      .top-bar button:hover {
+        background-color: var(--secondary);
+      }
 
-        .content {
-            padding: 20px;
-        }
+      .content {
+        padding: 20px;
+      }
 
-        /* Container for both boxes */
-        .container {
-            display: flex;
-            gap: 20px;
-            padding: 20px;
-        }
+      /* Container for both boxes */
+      .container {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+      }
 
-        /* Closet Box Styling */
-        .closet-box {
-            flex: 1;
-            padding: 20px;
-            border: 3px solid var(--accent);
-            border-radius: 8px;
-            background-color: var(--background);
-            color: var(--text);
-        }
+      /* Closet Box Styling */
+      .closet-box {
+        flex: 1;
+        padding: 20px;
+        border: 3px solid var(--accent);
+        border-radius: 8px;
+        background-color: var(--background);
+        color: var(--text);
+      }
 
-        .closet-box h2, .outfit-creator-box h2 {
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: var(--text);
-        }
+      .closet-box h2,
+      .outfit-creator-box h2 {
+        font-size: 24px;
+        margin-bottom: 15px;
+        color: var(--text);
+      }
 
-        .item-list {
-            list-style-type: none;
-            padding: 0;
-        }
+      .item-list {
+        list-style-type: none;
+        padding: 0;
+      }
 
-        .item-list li {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
+      .item-list li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
 
-        .item-image {
-            width: 50px;
-            height: 50px;
-            margin-right: 10px;
-            border: 1px solid var(--accent);
-            border-radius: 4px;
-        }
+      .item-image {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+        border: 1px solid var(--accent);
+        border-radius: 4px;
+      }
 
-        /* Outfit Creator Box Styling */
-        .outfit-creator-box {
-            flex: 1;
-            padding: 20px;
-            border: 2px solid var(--primary);
-            border-radius: 8px;
-            background-color: var(--background);
-            color: var(--text);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+      /* Outfit Creator Box Styling */
+      .outfit-creator-box {
+        flex: 1;
+        padding: 20px;
+        border: 2px solid var(--primary);
+        border-radius: 8px;
+        background-color: var(--background);
+        color: var(--text);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
 
-        .outfit-section {
-            margin-bottom: 15px;
-        }
+      .outfit-section {
+        margin-bottom: 15px;
+      }
 
-        .scrollable {
-            max-width: 1200px;
-            overflow-y: auto;
-            border: 1px solid var(--accent);
-            padding: 5px;
-            border-radius: 4px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-        }
+      .scrollable {
+        max-width: 1200px;
+        overflow-y: auto;
+        border: 1px solid var(--accent);
+        padding: 5px;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
 
-        .outfit-image {
-            width: 175px;
-            height: 175px;
-            margin: 5px 0;
-            border: 1px solid var(--accent);
-            border-radius: 4px;
-        }
+      .outfit-image {
+        width: 175px;
+        height: 175px;
+        margin: 5px 0;
+        border: 1px solid var(--accent);
+        border-radius: 4px;
+      }
 
-        .navigation {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
+      .navigation {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
 
-        .navigation button {
-            background-color: var(--secondary);
-            color: var(--text);
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-size: 16px;
-            border-radius: 4px;
-        }
+      .navigation button {
+        background-color: var(--secondary);
+        color: var(--text);
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 4px;
+      }
 
-        .navigation button:hover {
-            background-color: var(--accent);
-        }
+      .navigation button:hover {
+        background-color: var(--accent);
+      }
 
-        /* Dropdown menu styling */
-        .dropdown {
-            position: relative;
-        }
+      /* Dropdown menu styling */
+      .dropdown {
+        position: relative;
+      }
 
-        .dropdown-content {
-            display: none;
-            position: relative;
-            background-color: var(--primary);
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 5px;
-        }
+      .dropdown-content {
+        display: none;
+        position: relative;
+        background-color: var(--primary);
+        padding: 10px;
+        margin-top: 5px;
+        border-radius: 5px;
+      }
 
-        .dropdown-content a {
-            display: block;
-            color: var(--alt_text);
-            text-decoration: none;
-            margin: 8px 0;
-            padding: 10px;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
+      .dropdown-content a {
+        display: block;
+        color: var(--alt_text);
+        text-decoration: none;
+        margin: 8px 0;
+        padding: 10px;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+      }
 
-        .dropdown-content a:hover {
-            background-color: var(--secondary);
-        }
-        /* Style for My Profile link at the bottom of the sidebar */
-        .profile-link {
-            margin-top: auto;
-            padding-top: 20px;
-        }
+      .dropdown-content a:hover {
+        background-color: var(--secondary);
+      }
+      /* Style for My Profile link at the bottom of the sidebar */
+      .profile-link {
+        margin-top: auto;
+        padding-top: 20px;
+      }
 
-        .profile-link a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            padding: 10px;
-            border-radius: 5px;
-        }
+      .profile-link a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 10px;
+        border-radius: 5px;
+      }
 
-        .profile-link a:hover {
-            background-color: #555;
-        }
+      .profile-link a:hover {
+        background-color: #555;
+      }
+
+      .side-panel {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 300px;
+        height: 100%;
+        background-color: #f4f4f4;
+        border-left: 2px solid #ccc;
+        padding: 10px;
+        display: none; /* Initially hidden */
+        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+      }
+
+      #side-panel-content {
+        padding: 20px;
+      }
+
+      #side-panel-content button {
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      #side-panel-content img {
+        width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+      }
+
+      #side-panel-content p {
+        margin: 5px 0;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="sidebar">
-        <h2>CLOZETIER</h2>
-        <a href="{% url 'home' %}">Home</a>
-        <a href="{% url 'about' %}">About</a>
-        <!-- Clozetier dropdown menu -->
-        <div class="dropdown">
-            <a href="#" onclick="toggleDropdown(event)">Clozet ▼</a>
-            <div class="dropdown-content" id="clozetierDropdown">
-                <a href="{% url 'index' %}">Upload</a>
-                <a href="{% url 'clozet' %}">Clozet</a>
-                <a href="{% url 'outfitCreator' %}">Outfit Creator</a>
-                {% comment %} <a href="{% url 'option2' %}"></a> {% endcomment %}
-            </div>
+      <h2>CLOZETIER</h2>
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'about' %}">About</a>
+      <!-- Clozetier dropdown menu -->
+      <div class="dropdown">
+        <a href="#" onclick="toggleDropdown(event)">Clozet ▼</a>
+        <div class="dropdown-content" id="clozetierDropdown">
+          <a href="{% url 'index' %}">Upload</a>
+          <a href="{% url 'clozet' %}">Clozet</a>
+          <a href="{% url 'outfitCreator' %}">Outfit Creator</a>
+          {% comment %} <a href="{% url 'option2' %}"></a> {% endcomment %}
         </div>
-        <a href="{% url 'contact' %}">Contact</a>
+      </div>
+      <a href="{% url 'contact' %}">Contact</a>
 
-        <!-- My Profile link at the bottom -->
-        <div class="profile-link">
-            <a href="{% url 'profile' %}">My Profile</a>
-        </div>
+      <!-- My Profile link at the bottom -->
+      <div class="profile-link">
+        <a href="{% url 'profile' %}">My Profile</a>
+      </div>
     </div>
     <script>
-        function toggleDropdown(event) {
-            event.preventDefault();
-            var dropdown = document.getElementById("clozetierDropdown");
-            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-        }
+      function toggleDropdown(event) {
+        event.preventDefault();
+        var dropdown = document.getElementById("clozetierDropdown");
+        dropdown.style.display =
+          dropdown.style.display === "block" ? "none" : "block";
+      }
     </script>
 
     <div class="main-content">
-        <div class="top-bar">
-            {% if user.is_authenticated %}
-            <form action="{% url 'logout' %}" method="post">
-                {% csrf_token %}
-                <button type="submit">Log Out</button>
-            </form>
-            {% else %}
-            <a href="{% url 'signup' %}"><button>Sign Up</button></a>
-            <a href="{% url 'login' %}"><button>Login</button></a>
-            {% endif %}
-        </div>
-        <div class="content">
-            {% block content %}
-            <!-- Content will be injected here -->
-            {% endblock %}
-        </div>
+      <div class="top-bar">
+        {% if user.is_authenticated %}
+        <form action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button type="submit">Log Out</button>
+        </form>
+        {% else %}
+        <a href="{% url 'signup' %}"><button>Sign Up</button></a>
+        <a href="{% url 'login' %}"><button>Login</button></a>
+        {% endif %}
+      </div>
+      <div class="content">
+        {% block content %}
+        <!-- Content will be injected here -->
+        {% endblock %}
+      </div>
     </div>
 
     <script>
-        let lastFileName = '';
+      let lastFileName = "";
 
-        document.getElementById('file-upload-button').addEventListener('click', function () {
-            document.getElementById('file-upload').click(); 
+      document
+        .getElementById("file-upload-button")
+        .addEventListener("click", function () {
+          document.getElementById("file-upload").click();
         });
 
-        document.getElementById('file-upload').addEventListener('change', function () {
-            if (this.files.length > 0) {
-                lastFileName = this.files[0].name
-                document.getElementById('file-upload-button').querySelector('span').textContent = lastFileName;
-            }
+      document
+        .getElementById("file-upload")
+        .addEventListener("change", function () {
+          if (this.files.length > 0) {
+            lastFileName = this.files[0].name;
+            document
+              .getElementById("file-upload-button")
+              .querySelector("span").textContent = lastFileName;
+          }
         });
     </script>
-
-</body>
-
+  </body>
 </html>
-

@@ -11,5 +11,7 @@ urlpatterns = [
     path("clozet/", views.clozet_view, name='clozet'),
     path('outfit-creator/', views.outfit_creator_view, name='outfitCreator'),  # Add this line
     path('', views.index, name='index'),  # Main index page
+    path('get_item_details/<int:item_id>/', views.get_item_details, name='get_item_details'),
+    path('delete_item/', views.delete_item, name='delete_item'),
     # path('upload/', views.image_upload, name='image_upload'),
 ]
