@@ -151,19 +151,19 @@
         }
 
         .scrollable {
-            max-height: 300px;
+            max-width: 1200px;
             overflow-y: auto;
             border: 1px solid var(--accent);
             padding: 5px;
             border-radius: 4px;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
         }
 
         .outfit-image {
-            width: 80px;
-            height: 80px;
+            width: 175px;
+            height: 175px;
             margin: 5px 0;
             border: 1px solid var(--accent);
             border-radius: 4px;
@@ -243,9 +243,10 @@
         <a href="{% url 'about' %}">About</a>
         <!-- Clozetier dropdown menu -->
         <div class="dropdown">
-            <a href="#" onclick="toggleDropdown(event)">Closet ▼</a>
+            <a href="#" onclick="toggleDropdown(event)">Clozet ▼</a>
             <div class="dropdown-content" id="clozetierDropdown">
                 <a href="{% url 'index' %}">Upload</a>
+                <a href="{% url 'clozet' %}">Clozet</a>
                 <a href="{% url 'outfitCreator' %}">Outfit Creator</a>
                 {% comment %} <a href="{% url 'option2' %}"></a> {% endcomment %}
             </div>
