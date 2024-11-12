@@ -10,7 +10,6 @@ from django.conf import settings
 from .model_utils import run_image_through_models
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
-from .AI_clothing_classification import get_recommended_clothing
 from django.shortcuts import render
 from django.http import JsonResponse
 
