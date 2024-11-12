@@ -23,27 +23,3 @@ COLOR_RECOMMENDATIONS = {
     'Peach': ['Peach', 'White', 'Cream', 'Gray', 'Light-Gray', 'Pink', 'Light-Blue', 'Light-Red', 'Yellow'],
     'Gold': ['Gold', 'White', 'Black', 'Cream', 'Gray', 'Dark-Green', 'Brown', 'Yellow', 'Dark-Gray']
 }
-
-from .models import ClothingItem
-
-def get_recommended_clothing(selected_item, target_cloth_type):
-    selected_color = selected_item.cloth_color
-    
-    # Get the prioritized color list
-    color_priority_list = COLOR_RECOMMENDATIONS.get(selected_color, [])
-    
-    recommended_items = []
-    
-    # Loop through colors in priority order to find matching items
-    for color in color_priority_list:
-        matching_items = ClothingItem.objects.filter(cloth_color=color, cloth_type=target_cloth_type)
-        
-        # Add all items of this color/type combination to recommendations
-        if matching_items.exists():
-            recommended_items.extend(matching_items)
-    
-    if not recommended_items:
-        print("You have no drip... Go shopping little bro!")
-        return []
-    
-    return recommended_items

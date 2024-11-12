@@ -1,80 +1,80 @@
 {% extends "base.html" %}
 
 {% block title %}
-    About Clozetier
+About Clozetier
 {% endblock %}
 
 {% block content %}
-    <style>
-        /* Container for tabs */
-        .tab-container {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 2px solid var(--accent);
-            border-radius: 8px;
-            background-color: var(--background);
-        }
+<style>
+    /* Container for tabs */
+    .tab-container {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 2px solid var(--accent);
+        border-radius: 8px;
+        background-color: var(--background);
+    }
 
-        /* Tab header */
-        .tab-header {
-            display: flex;
-            justify-content: space-around;
-            border-bottom: 2px solid var(--accent);
-            margin-bottom: 20px;
-        }
+    /* Tab header */
+    .tab-header {
+        display: flex;
+        justify-content: space-around;
+        border-bottom: 2px solid var(--accent);
+        margin-bottom: 20px;
+    }
 
-        /* Tab buttons */
-        .tab-button {
-            flex: 1;
-            padding: 10px;
-            text-align: center;
-            cursor: pointer;
-            color: var(--text);
-            background-color: var(--primary);
-            border-right: 1px solid var(--accent);
-        }
+    /* Tab buttons */
+    .tab-button {
+        flex: 1;
+        padding: 10px;
+        text-align: center;
+        cursor: pointer;
+        color: var(--alt_text);
+        background-color: var(--primary);
+        border-right: 1px solid var(--accent);
+    }
 
-        .tab-button:last-child {
-            border-right: none;
-        }
+    .tab-button:last-child {
+        border-right: none;
+    }
 
-        .tab-button:hover {
-            background-color: var(--secondary);
-        }
+    .tab-button:hover {
+        background-color: var(--secondary);
+    }
 
-        .tab-button.active {
-            background-color: var(--accent);
-            color: var(--background);
-        }
+    .tab-button.active {
+        background-color: var(--accent);
+        color: var(--text);
+    }
 
-        /* Tab content */
-        .tab-content {
-            display: none;
-            color: var(--text);
-        }
+    /* Tab content */
+    .tab-content {
+        display: none;
+        color: var(--text);
+    }
 
-        .tab-content.active {
-            display: block;
-        }
-    </style>
+    .tab-content.active {
+        display: block;
+    }
+</style>
 
-    <script>
-        function openTab(event, tabName) {
-            const tabButtons = document.querySelectorAll('.tab-button');
-            const tabContents = document.querySelectorAll('.tab-content');
-    
-            // Remove active class from all tabs and hide content
-            tabButtons.forEach(button => button.classList.remove('active'));
-            tabContents.forEach(content => content.classList.remove('active'));
-    
-            // Add active class to the clicked tab and show the corresponding content
-            event.currentTarget.classList.add('active');
-            document.getElementById(tabName).classList.add('active');
-        }
-    </script>
-    
+<script>
+    function openTab(event, tabName) {
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        // Remove active class from all tabs and hide content
+        tabButtons.forEach(button => button.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
+
+        // Add active class to the clicked tab and show the corresponding content
+        event.currentTarget.classList.add('active');
+        document.getElementById(tabName).classList.add('active');
+    }
+</script>
+
 <div class="tab-container">
     <!-- Tabs -->
     <div class="tab-header">
@@ -88,15 +88,21 @@
     <!-- Tab Content -->
     <div id="what-is" class="tab-content active">
         <h1>What is Clozetier?</h1>
-        <p>Clozetier is a smart, AI-powered clothing organization and recommendation platform designed to help you organize, style, and make the most of your wardrobe. By uploading photos of your clothing, Clozetier can categorize and store them for easy access. It also suggests outfit pairings, making it simple to find matching pieces based on color and style, giving you confidence in your everyday wardrobe choices!</p>
+        <p>Clozetier is a smart, AI-powered clothing organization and recommendation platform designed to help you
+            organize, style, and make the most of your wardrobe. By uploading photos of your clothing, Clozetier can
+            categorize and store them for easy access. It also suggests outfit pairings, making it simple to find
+            matching pieces based on color and style, giving you confidence in your everyday wardrobe choices!</p>
     </div>
 
     <div id="features" class="tab-content">
         <h1>Core Features</h1>
         <ul>
-            <li><strong>Clothing Upload & Categorization:</strong> Upload photos of your clothes, which are automatically categorized using AI.</li>
-            <li><strong>Outfit Recommendations:</strong> AI suggests clothing combinations that match well together.</li>
-            <li><strong>Personalized Closet Database:</strong> All your clothing items are stored in your personal digital "closet".</li>
+            <li><strong>Clothing Upload & Categorization:</strong> Upload photos of your clothes, which are
+                automatically categorized using AI.</li>
+            <li><strong>Outfit Recommendations:</strong> AI suggests clothing combinations that match well together.
+            </li>
+            <li><strong>Personalized Closet Database:</strong> All your clothing items are stored in your personal
+                digital "closet".</li>
             <li><strong>Account & User Interface:</strong> Easy navigation with a sidebar for quick access.</li>
         </ul>
     </div>
@@ -113,12 +119,14 @@
 
     <div id="mission" class="tab-content">
         <h1>Our Mission</h1>
-        <p>At Clozetier, our mission is to make styling and organizing clothing easier and more intuitive. We believe everyone deserves confidence in their everyday style choices.</p>
+        <p>At Clozetier, our mission is to make styling and organizing clothing easier and more intuitive. We believe
+            everyone deserves confidence in their everyday style choices.</p>
     </div>
 
     <div id="team" class="tab-content">
         <h1>Meet the Team</h1>
-        <p>Our team of four brings together a range of skills in AI, software development, and design. We’re passionate about solving real-world challenges with innovative technology.</p>
+        <p>Our team of four brings together a range of skills in AI, software development, and design. We’re passionate
+            about solving real-world challenges with innovative technology.</p>
     </div>
 </div>
 {% endblock %}
