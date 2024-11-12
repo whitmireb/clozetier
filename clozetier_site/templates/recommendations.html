@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="image-container">
+    <!-- Show image of the current recommendation -->
+    <img id="current-image" class="recommendation-image" src="{{ recommendations.0.image.url }}" alt="Recommendation">
+</div>
+
+<div id="message" class="message"></div>
+
+<!-- Show the number of remaining recommendations -->
+<div id="recommendation-count">
+    <p>Recommendations left: <span id="remaining-count">{{ recommendations|length }}</span></p>
+</div>
+
+<div class="buttons">
+    <button id="swipe-left" class="button">Swipe Left (No)</button>
+    <button id="swipe-right" class="button">Swipe Right (Yes)</button>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Ensure recommendations are passed correctly from Django
+    const recommendations = {{ recommendations|safe }};
+    let currentIndex = 0;  // Tracks the current recommendation index
+
+    const imageElement = document.getElementById('current-image');
+    const messageElement = document.getElementById('message');
+    const remainingCountElement = document.getElementById('remaining-count');
+
+    // Display the current recommendation
+    function displayRecommendation() {
+        if (currentIndex >= recommendations.length) {
+            // No more items
+            messageElement.innerHTML = "You are out of options";
+            imageElement.style.display = "none";
+            document.getElementById("swipe-left").style.display = "none";
+            document.getElementById("swipe-right").style.display = "none";
+        } else {
+            const item = recommendations[currentIndex];
+            imageElement.src = item.image.url;
+            messageElement.innerHTML = "";  // Clear any message
+            imageElement.classList.remove('enlarged');  // Ensure image is not enlarged by default
+            remainingCountElement.innerHTML = recommendations.length - currentIndex;  // Update remaining count
+        }
+    }
+
+    // Handle swipe left (no)
+    document.getElementById('swipe-left').addEventListener('click', () => {
+        console.log('Swipe left clicked');  // Debug log
+        currentIndex++;  // Move to the next recommendation
+        displayRecommendation();
+    });
+
+    // Handle swipe right (yes)
+    document.getElementById('swipe-right').addEventListener('click', () => {
+        console.log('Swipe right clicked');  // Debug log
+        const item = recommendations[currentIndex];
+        imageElement.classList.add('enlarged');  // Enlarge the image when swiped right
+        messageElement.innerHTML = "This is your pick!";
+        
+        // Wait for 1.5 seconds before showing the next recommendation
+        setTimeout(() => {
+            currentIndex++;  // Move to the next recommendation after the delay
+            displayRecommendation();
+        }, 1500);  // Show message for 1.5 seconds before moving to next
+    });
+
+    // Initialize with the first recommendation
+    displayRecommendation();
+});
+</script>
+{% endblock %}

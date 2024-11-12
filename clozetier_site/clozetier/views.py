@@ -10,6 +10,8 @@ from django.conf import settings
 from .model_utils import run_image_through_models
 from django.shortcuts import render, get_object_or_404
 from .AI_clothing_classification import get_recommended_clothing
+from django.shortcuts import render
+from django.http import JsonResponse
 
 @login_required
 def index(request):
@@ -131,6 +133,10 @@ def outfit_creator_view(request):
         'categorized_items': categorized_items
     })
 
+# Ensure you import render at the top of the file
+from django.shortcuts import render
+from .models import ClothingItem  # Ensure this import exists
+
 def select_clothing(request):
     clothing_items = ClothingItem.objects.all()
     clothing_labels = ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve', 
@@ -141,7 +147,6 @@ def select_clothing(request):
         'clothing_labels': clothing_labels
     })
 
-    from django.shortcuts import render
 
 def recommendation_view(request):
     # Pass any context data needed for the template
@@ -151,15 +156,111 @@ def recommendation_view(request):
                             'pants', 'polo-shirt', 'shoes', 'shorts', 'skirt', 'T-shirt', 'under-shirt']
     })
 
+from django.http import JsonResponse
 
-def selected_item_view(request):
-    # Retrieve data passed from the previous page (e.g., via POST or GET)
-    item_image_url = request.GET.get('image_url', '')  # or request.POST for POST method
-    item_type = request.GET.get('type', 'Unknown')
-    item_color = request.GET.get('color', 'Unknown')
+def process_selection(request):
+    if request.method == "POST":
+        selected_item_id = request.POST.get('selected_item_id')
+        selected_item_color = request.POST.get('selected_item_color')
+        selected_item_type = request.POST.get('selected_item_type')
+        clothing_article = request.POST.get('clothing_article')
 
-    return render(request, 'selected_item.html', {
-        'item_image_url': item_image_url,
-        'item_type': item_type,
-        'item_color': item_color,
-    })
+        # Process the data (store, display, or further logic)
+        response_data = {
+            'selected_item_id': selected_item_id,
+            'selected_item_color': selected_item_color,
+            'selected_item_type': selected_item_type,
+            'clothing_article': clothing_article,
+        }
+
+        return JsonResponse(response_data)  # Or return appropriate respons
+
+COLOR_RECOMMENDATIONS = {
+    'Black': ['Black', 'White', 'Cream', 'Dark-Gray', 'Gray', 'Light-Gray', 'Dark-Blue', 'Dark-Brown', 'Dark-Green'],
+    'White': ['White', 'Black', 'Cream', 'Gray', 'Light-Gray', 'Peach', 'Light-Blue', 'Light-Red', 'Light-Green'],
+    'Dark-Gray': ['Dark-Gray', 'Black', 'Gray', 'White', 'Cream', 'Dark-Blue', 'Dark-Brown', 'Dark-Green', 'Purple'],
+    'Gray': ['Gray', 'White', 'Black', 'Light-Gray', 'Dark-Gray', 'Cream', 'Dark-Blue', 'Dark-Brown', 'Red'],
+    'Light-Gray': ['Light-Gray', 'Gray', 'White', 'Black', 'Cream', 'Light-Blue', 'Light-Green', 'Peach', 'Pink'],
+    'Dark-Blue': ['Dark-Blue', 'White', 'Cream', 'Dark-Gray', 'Black', 'Gray', 'Brown', 'Light-Blue', 'Red'],
+    'Blue': ['Blue', 'White', 'Black', 'Cream', 'Gray', 'Light-Gray', 'Dark-Gray', 'Red', 'Pink'],
+    'Light-Blue': ['Light-Blue', 'White', 'Gray', 'Light-Gray', 'Blue', 'Cream', 'Peach', 'Light-Green', 'Pink'],
+    'Dark-Brown': ['Dark-Brown', 'White', 'Cream', 'Dark-Gray', 'Black', 'Gray', 'Brown', 'Dark-Green', 'Gold'],
+    'Brown': ['Brown', 'White', 'Cream', 'Black', 'Gray', 'Dark-Brown', 'Dark-Gray', 'Dark-Green', 'Gold'],
+    'Cream': ['Cream', 'White', 'Black', 'Gray', 'Brown', 'Peach', 'Gold', 'Light-Gray', 'Pink'],
+    'Dark-Red': ['Dark-Red', 'White', 'Black', 'Dark-Gray', 'Gray', 'Cream', 'Red', 'Pink', 'Dark-Brown'],
+    'Red': ['Red', 'White', 'Black', 'Gray', 'Dark-Gray', 'Cream', 'Pink', 'Dark-Red', 'Light-Red'],
+    'Light-Red': ['Light-Red', 'White', 'Cream', 'Pink', 'Peach', 'Red', 'Gray', 'Light-Gray', 'Black'],
+    'Pink': ['Pink', 'White', 'Cream', 'Light-Gray', 'Gray', 'Red', 'Light-Red', 'Light-Blue', 'Peach'],
+    'Purple': ['Purple', 'White', 'Cream', 'Black', 'Gray', 'Dark-Gray', 'Pink', 'Light-Gray', 'Red'],
+    'Dark-Green': ['Dark-Green', 'White', 'Cream', 'Dark-Gray', 'Black', 'Gray', 'Green', 'Brown', 'Gold'],
+    'Green': ['Green', 'White', 'Black', 'Cream', 'Gray', 'Dark-Green', 'Light-Green', 'Peach', 'Gold'],
+    'Light-Green': ['Light-Green', 'White', 'Cream', 'Gray', 'Light-Gray', 'Green', 'Peach', 'Yellow', 'Pink'],
+    'Yellow': ['Yellow', 'White', 'Black', 'Gray', 'Cream', 'Light-Gray', 'Light-Green', 'Peach', 'Gold'],
+    'Orange': ['Orange', 'White', 'Black', 'Gray', 'Cream', 'Brown', 'Peach', 'Red', 'Gold'],
+    'Peach': ['Peach', 'White', 'Cream', 'Gray', 'Light-Gray', 'Pink', 'Light-Blue', 'Light-Red', 'Yellow'],
+    'Gold': ['Gold', 'White', 'Black', 'Cream', 'Gray', 'Dark-Green', 'Brown', 'Yellow', 'Dark-Gray']
+}
+
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from .models import ClothingItem
+
+# views.py
+from django.http import JsonResponse
+
+import logging
+
+logger = logging.getLogger(__name__)
+
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from .models import ClothingItem  # Import your ClothingItem model
+import logging
+
+logger = logging.getLogger(__name__)
+
+def get_clothing_recommendations(request):
+    if request.method == "POST":
+        selected_item_id = request.POST.get('selected_item_id')
+        selected_item_color = request.POST.get('selected_item_color')
+        selected_item_type = request.POST.get('selected_item_type')
+        clothing_article = request.POST.get('clothing_article')
+
+        logger.debug(f"Received POST data: ID={selected_item_id}, Color={selected_item_color}, Type={selected_item_type}, Article={clothing_article}")
+
+        if not all([selected_item_id, selected_item_color, selected_item_type, clothing_article]):
+            return JsonResponse({"success": False, "error": "Missing data fields"}, status=400)
+
+        # Get recommendations using recommend_clothing function
+        recommendations = recommend_clothing(selected_item_color, clothing_article)
+
+        # Save recommendations to the session to access them in /recommendations/
+        request.session['recommendations'] = [item.id for item in recommendations]  # Store IDs or serialize items as needed
+
+        data = {
+            "success": True,
+            "redirect_url": "/clozetier/recommendations/"  # Adjust if necessary
+        }
+        return JsonResponse(data)
+
+    return JsonResponse({"success": False, "error": "Invalid request"}, status=400)
+
+def recommend_clothing(selected_color, clothing_article):
+    matching_colors = COLOR_RECOMMENDATIONS.get(selected_color, [])
+    recommended_items = []
+
+    # Get clothing items that match the color and type
+    clothing_items = ClothingItem.objects.filter(cloth_type=clothing_article)
+    for item in clothing_items:
+        if item.cloth_color in matching_colors:
+            recommended_items.append(item)
+
+    return recommended_items
+
+def show_recommendations(request):
+    # Retrieve recommendations from session
+    recommendation_ids = request.session.get('recommendations', [])
+    recommendations = ClothingItem.objects.filter(id__in=recommendation_ids)
+
+    return render(request, 'recommendations.html', {'recommendations': recommendations})
+
