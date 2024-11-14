@@ -6,52 +6,56 @@
     <div class="content">
         <h1>Select Clothing Item</h1>
 
-        <!-- Clothing Category Dropdown -->
-        <label for="clothing-category">Select Clothing Category:</label>
-        <select id="category-dropdown" onchange="updateCategorySelection()">
-            <option value="All">--All Categories--</option>
-            {% for label in clothing_labels %}
-                <option value="{{ label }}">{{ label }}</option>
-            {% endfor %}
-        </select>
-
-        <!-- Image Display Section -->
-        <div id="image-display-container" style="text-align: center;">
-            <button class="nav-button" onclick="prevImage()">Previous</button>
-            <img id="displayed-image" src="" alt="Selected Clothing" style="max-width: 50%; height: auto; border: 2px solid var(--accent);" />
-            <button class="nav-button" onclick="nextImage()">Next</button>
-            
-            <!-- Image Counter -->
-            <div id="image-counter" style="font-size: 18px; color: var(--accent); margin-top: 10px;"></div>
-        </div>
-
-        <!-- Image Info and Submit Button -->
-        <div style="text-align: center; margin-top: 20px;">
-            <p id="image-info" style="font-size: 16px;"></p>
-            
-            <!-- New Dropdown for "What Clothing Article Are You Looking For?" -->
-            <label for="clothing-article">What clothing article are you looking for?</label>
-            <select id="clothing-article-dropdown">
-                <option value="No-Selection">Blazer</option>
-                <option value="blazer">Blazer</option>
-                <option value="body">Body</option>
-                <option value="buttondown-shirt">Buttondown Shirt</option>
-                <option value="dress">Dress</option>
-                <option value="hat">Hat</option>
-                <option value="hoodie">Hoodie</option>
-                <option value="longsleeve">Longsleeve</option>
-                <option value="pants">Pants</option>
-                <option value="polo-shirt">Polo Shirt</option>
-                <option value="shoes">Shoes</option>
-                <option value="shorts">Shorts</option>
-                <option value="skirt">Skirt</option>
-                <option value="t-shirt">T-shirt</option>
-                <option value="under-shirt">Under-shirt</option>
+        {% if is_empty %}
+            <p style="text-align: center; font-size: 20px; color: var(--accent);">You need to step your drip game up!</p>
+        {% else %}
+            <!-- Clothing Category Dropdown -->
+            <label for="clothing-category">Select Clothing Category:</label>
+            <select id="category-dropdown" onclick="updateCategorySelection()">
+                <option value="All">--All Categories--</option>
+                {% for label in clothing_labels %}
+                    <option value="{{ label }}">{{ label }}</option>
+                {% endfor %}
             </select>
-            
-            <button id="submit-button" onclick="submitSelection()">Submit Selection</button>
-        </div>
+
+            <!-- Image Display Section -->
+            <div id="image-display-container" style="text-align: center;">
+                <button class="nav-button" onclick="prevImage()">Previous</button>
+                <img id="displayed-image" src="" alt="Selected Clothing" style="max-width: 50%; height: auto; border: 2px solid var(--accent);" />
+                <button class="nav-button" onclick="nextImage()">Next</button>
+                
+                <!-- Image Counter -->
+                <div id="image-counter" style="font-size: 18px; color: var(--accent); margin-top: 10px;"></div>
+            </div>
+
+            <!-- Image Info and Submit Button -->
+            <div style="text-align: center; margin-top: 20px;">
+                <p id="image-info" style="font-size: 16px;"></p>
+                
+                <label for="clothing-article">What clothing article are you looking for?</label>
+                <select id="clothing-article-dropdown">
+                    <option value="No-Selection">Blazer</option>
+                    <option value="blazer">Blazer</option>
+                    <option value="body">Body</option>
+                    <option value="buttondown-shirt">Buttondown Shirt</option>
+                    <option value="dress">Dress</option>
+                    <option value="hat">Hat</option>
+                    <option value="hoodie">Hoodie</option>
+                    <option value="longsleeve">Longsleeve</option>
+                    <option value="pants">Pants</option>
+                    <option value="polo-shirt">Polo Shirt</option>
+                    <option value="shoes">Shoes</option>
+                    <option value="shorts">Shorts</option>
+                    <option value="skirt">Skirt</option>
+                    <option value="t-shirt">T-shirt</option>
+                    <option value="under-shirt">Under-shirt</option>
+                </select>
+                
+                <button id="submit-button" onclick="submitSelection()">Submit Selection</button>
+            </div>
+        {% endif %}
     </div>
+
 
     <script>
         const clothingItems = [

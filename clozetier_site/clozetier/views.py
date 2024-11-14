@@ -180,20 +180,18 @@ def delete_item(request):
 
         messages.success(request, 'Item deleted successfully!')
         return redirect('clozet')  # Redirect back to the outfit creator view
-    
 
-# Ensure you import render at the top of the file
-from django.shortcuts import render
-from .models import ClothingItem  # Ensure this import exists
 
 def select_clothing(request):
     clothing_items = ClothingItem.objects.all()
     clothing_labels = ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve', 
                        'pants', 'polo-shirt', 'shoes', 'shorts', 'skirt', 'T-shirt', 'under-shirt']
-
+    
+    is_empty = not clothing_items.exists()
     return render(request, 'select_clothing_image.html', {
         'clothing_items': clothing_items,
-        'clothing_labels': clothing_labels
+        'clothing_labels': clothing_labels,
+        'is_empty': is_empty
     })
 
 
