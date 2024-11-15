@@ -11,7 +11,7 @@
         {% else %}
             <!-- Clothing Category Dropdown -->
             <label for="clothing-category">Select Clothing Category:</label>
-            <select id="category-dropdown" onclick="updateCategorySelection()">
+            <select id="category-dropdown" onchange="updateCategorySelection()">
                 <option value="All">--All Categories--</option>
                 {% for label in clothing_labels %}
                     <option value="{{ label }}">{{ label }}</option>
