@@ -45,7 +45,7 @@ def index(request):
             # Categorize items
             categories = {
                 'hats': ['hat'],
-                'tops': ['T-shirt', 'longsleeve', 'polo-shirt', 'hoodie', 'buttondown-shirt', 'blazer'],
+                'tops': ['T-shirt', 'longsleeve', 'polo-shirt', 'hoodie', 'buttondown-shirt', 'blazer', 'dress'],
                 'bottoms': ['pants', 'shorts', 'skirt'],
                 'shoes': ['shoes'],
             }
@@ -304,10 +304,27 @@ def recommend_clothing(selected_color, clothing_article):
 
     return recommended_items
 
+from django.core.serializers import serialize
+from django.http import JsonResponse
+
 def show_recommendations(request):
     # Retrieve recommendations from session
     recommendation_ids = request.session.get('recommendations', [])
     recommendations = ClothingItem.objects.filter(id__in=recommendation_ids)
 
-    return render(request, 'recommendations.html', {'recommendations': recommendations})
+    # Serialize recommendations into a JSON-friendly format
+    serialized_recommendations = [
+        {
+            "id": item.id,
+            "image": {"url": item.image.url},
+            "cloth_color": item.cloth_color,
+            "cloth_type": item.cloth_type,
+        }
+        for item in recommendations
+    ]
 
+    # Pass serialized recommendations to the template
+    return render(request, 'recommendations.html', {
+        'recommendations_json': serialized_recommendations,  # Pass to JavaScript
+        'recommendations': recommendations,  # For rendering in HTML
+    })
