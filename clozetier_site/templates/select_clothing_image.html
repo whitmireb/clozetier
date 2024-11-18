@@ -3,102 +3,153 @@
 {% block title %}Select Clothing Item{% endblock %}
 
 {% block content %}
-    <div class="content">
-        <h1>Select Clothing Item</h1>
+<div class="content">
+    <h1>Select Clothing Item</h1>
 
-        <!-- Clothing Category Dropdown -->
-        <label for="clothing-category">Select Clothing Category:</label>
-        <select id="category-dropdown" onchange="updateCategorySelection()">
-            <option value="All">--All Categories--</option>
-            {% for label in clothing_labels %}
-                <option value="{{ label }}">{{ label }}</option>
-            {% endfor %}
-        </select>
+    {% if is_empty %}
+    <p style="text-align: center; font-size: 20px; color: var(--accent);">You need to step your drip game up!</p>
+    {% else %}
+    <!-- Clothing Category Dropdown -->
+    <label for="clothing-category">Select Clothing Category:</label>
+    <select id="category-dropdown" onchange="updateCategorySelection()">
+        <option value="All">--All Categories--</option>
+        {% for label in clothing_labels %}
+        <option value="{{ label }}">{{ label }}</option>
+        {% endfor %}
+    </select>
 
-        <!-- Image Display Section -->
-        <div id="image-display-container" style="text-align: center;">
-            <button class="nav-button" onclick="prevImage()">Previous</button>
-            <img id="displayed-image" src="" alt="Selected Clothing" style="max-width: 50%; height: auto; border: 2px solid var(--accent);" />
-            <button class="nav-button" onclick="nextImage()">Next</button>
-            
-            <!-- Image Counter -->
-            <div id="image-counter" style="font-size: 18px; color: var(--accent); margin-top: 10px;"></div>
-        </div>
+    <!-- Image Display Section -->
+    <div id="image-display-container" style="text-align: center;">
+        <button class="nav-button" onclick="prevImage()">Previous</button>
+        <img id="displayed-image" src="" alt="Selected Clothing"
+            style="max-width: 50%; height: auto; border: 2px solid var(--accent);" />
+        <button class="nav-button" onclick="nextImage()">Next</button>
 
-        <!-- Image Info and Submit Button -->
-        <div style="text-align: center; margin-top: 20px;">
-            <p id="image-info" style="font-size: 16px;"></p>
-            <button id="submit-button" onclick="submitSelection()">Submit Selection</button>
-        </div>
+        <!-- Image Counter -->
+        <div id="image-counter" style="font-size: 18px; color: var(--accent); margin-top: 10px;"></div>
     </div>
 
-    <script>
-        const clothingItems = [
-            {% for item in clothing_items %}
-                {
-                    id: {{ item.id }},
-                    url: "{{ item.image.url }}",  // Directly use the media URL here
-                    type: "{{ item.cloth_type|escapejs }}",  // Use escapejs to properly escape any characters
-                    color: "{{ item.cloth_color|escapejs }}" // Same for cloth_color
-                }{% if not forloop.last %},{% endif %}
-            {% endfor %}
+    <!-- Image Info and Submit Button -->
+    <div style="text-align: center; margin-top: 20px;">
+        <p id="image-info" style="font-size: 16px;"></p>
+
+        <label for="clothing-article">What clothing article are you looking for?</label>
+        <select id="clothing-article-dropdown">
+            <option value="No-Selection">Blazer</option>
+            <option value="blazer">Blazer</option>
+            <option value="body">Body</option>
+            <option value="buttondown-shirt">Buttondown Shirt</option>
+            <option value="dress">Dress</option>
+            <option value="hat">Hat</option>
+            <option value="hoodie">Hoodie</option>
+            <option value="longsleeve">Longsleeve</option>
+            <option value="pants">Pants</option>
+            <option value="polo-shirt">Polo Shirt</option>
+            <option value="shoes">Shoes</option>
+            <option value="shorts">Shorts</option>
+            <option value="skirt">Skirt</option>
+            <option value="t-shirt">T-shirt</option>
+            <option value="under-shirt">Under-shirt</option>
+        </select>
+
+        <button id="submit-button" onclick="submitSelection()">Submit Selection</button>
+    </div>
+    {% endif %}
+</div>
+
+
+<script>
+    const clothingItems = [
+        {% for item in clothing_items %}
+    {
+        id: { { item.id } },
+        url: "{{ item.image.url }}",  // Directly use the media URL here
+            type: "{{ item.cloth_type|escapejs }}",  // Use escapejs to properly escape any characters
+                color: "{{ item.cloth_color|escapejs }}" // Same for cloth_color
+    } {% if not forloop.last %}, {% endif %}
+    {% endfor %}
         ];
 
-        let currentIndex = 0;
-        let filteredItems = clothingItems; // To hold items based on selected category
+    let currentIndex = 0;
+    let filteredItems = clothingItems; // To hold items based on selected category
 
-        // Function to display the current image and update counter
-        function displayImage(index) {
-            const image = document.getElementById('displayed-image');
-            const info = document.getElementById('image-info');
-            const counter = document.getElementById('image-counter');
-            
-            image.src = filteredItems[index].url;
-            info.textContent = `Color: ${filteredItems[index].color}, Type: ${filteredItems[index].type}`;
-            
-            // Update the counter (index starts from 1)
-            counter.textContent = `${index + 1} / ${filteredItems.length}`;
-        }
+    // Function to display the current image and update counter
+    function displayImage(index) {
+        const image = document.getElementById('displayed-image');
+        const info = document.getElementById('image-info');
+        const counter = document.getElementById('image-counter');
 
-        // Navigate to the next image
-        function nextImage() {
-            currentIndex = (currentIndex + 1) % filteredItems.length;
-            displayImage(currentIndex);
-        }
+        image.src = filteredItems[index].url;
+        info.textContent = `Color: ${filteredItems[index].color}, Type: ${filteredItems[index].type}`;
 
-        // Navigate to the previous image
-        function prevImage() {
-            currentIndex = (currentIndex - 1 + filteredItems.length) % filteredItems.length;
-            displayImage(currentIndex);
-        }
+        // Update the counter (index starts from 1)
+        counter.textContent = `${index + 1} / ${filteredItems.length}`;
+    }
 
-        // Handle submission of the selected image
-        function submitSelection() {
-            const selectedItem = filteredItems[currentIndex];
-            const url = `{% url 'selected_item' %}?image_url=${encodeURIComponent(selectedItem.url)}&type=${encodeURIComponent(selectedItem.type)}&color=${encodeURIComponent(selectedItem.color)}`;
-            window.location.href = url;
-        }
+    // Navigate to the next image
+    function nextImage() {
+        currentIndex = (currentIndex + 1) % filteredItems.length;
+        displayImage(currentIndex);
+    }
 
-        // Update the filtered items based on the selected category
-        function filterItemsByCategory(category) {
-            if (category === "All") {
-                filteredItems = clothingItems;
-            } else {
-                filteredItems = clothingItems.filter(item => item.type.toLowerCase() === category.toLowerCase());
+    // Navigate to the previous image
+    function prevImage() {
+        currentIndex = (currentIndex - 1 + filteredItems.length) % filteredItems.length;
+        displayImage(currentIndex);
+    }
+
+    // Handle submission of the selected image and the article they are looking for
+    function submitSelection() {
+        const selectedItem = filteredItems[currentIndex];
+        const clothingArticle = document.getElementById("clothing-article-dropdown").value;
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        const formData = new FormData();
+        formData.append('selected_item_id', selectedItem.id);
+        formData.append('selected_item_color', selectedItem.color);
+        formData.append('selected_item_type', selectedItem.type);
+        formData.append('clothing_article', clothingArticle);
+
+        fetch("/clozetier/get_clothing_recommendations/", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-CSRFToken": csrfToken
             }
-            currentIndex = 0; // Reset to the first image
-            displayImage(currentIndex); // Display the first image of the new filtered set
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = data.redirect_url;
+                } else {
+                    alert("No matching items found.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error.message || error);
+                alert("An error occurred while processing your request.");
+            });
+    }
+    // Update the filtered items based on the selected category
+    function filterItemsByCategory(category) {
+        if (category === "All") {
+            filteredItems = clothingItems;
+        } else {
+            filteredItems = clothingItems.filter(item => item.type.toLowerCase() === category.toLowerCase());
         }
+        currentIndex = 0; // Reset to the first image
+        displayImage(currentIndex); // Display the first image of the new filtered set
+    }
 
-        // Dropdown event handler
-        function updateCategorySelection() {
-            const category = document.getElementById("category-dropdown").value;
-            filterItemsByCategory(category);
-        }
+    // Dropdown event handler
+    function updateCategorySelection() {
+        const category = document.getElementById("category-dropdown").value;
+        filterItemsByCategory(category);
+    }
 
-        // Display the first image initially
-        window.onload = function() {
-            displayImage(currentIndex);
-        };
-    </script>
+    // Display the first image initially
+    window.onload = function () {
+        displayImage(currentIndex);
+    };
+</script>
 {% endblock %}

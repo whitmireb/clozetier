@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="image-container">
+    <!-- Show image of the current recommendation -->
+    <img id="current-image" class="recommendation-image" src="{{ recommendations.0.image.url }}" alt="Recommendation">
+</div>
+
+<div id="message" class="message"></div>
+
+<!-- Show the number of remaining recommendations -->
+<div id="recommendation-count">
+    <p>Recommendations left: <span id="remaining-count">{{ recommendations|length }}</span></p>
+</div>
+
+<div class="buttons">
+    <button id="swipe-left" class="button" onclick="swipeLeft()">Swipe Left (No)</button>
+    <button id="swipe-right" class="button" onclick="swipeRight()">Swipe Right (Yes)</button>
+</div>
+
+<!-- Safely embed recommendations JSON for JavaScript -->
+<script id="recommendations-data" type="application/json">
+    {{ recommendations_json|safe }}
+</script>
+
+<script>
+let recommendations = [];
+let currentIndex = 0;
+let totalRecommendations = 0;
+
+function initializeRecommendations() {
+    recommendations = JSON.parse(document.getElementById('recommendations-data').textContent);
+    currentIndex = 0;
+    totalRecommendations = recommendations.length;
+
+    displayRecommendation();
+}
+
+function displayRecommendation() {
+    const imageElement = document.getElementById('current-image');
+    const messageElement = document.getElementById('message');
+    const remainingCountElement = document.getElementById('remaining-count');
+
+    if (currentIndex >= recommendations.length) {
+        // Out of recommendations
+        messageElement.innerHTML = "You are out of options";
+        imageElement.style.display = "none";
+        document.getElementById("swipe-left").style.display = "none";
+        document.getElementById("swipe-right").style.display = "none";
+    } else {
+        // Show the current recommendation
+        const item = recommendations[currentIndex];
+        imageElement.src = item.image.url;
+        imageElement.style.display = "block";
+        imageElement.classList.remove('enlarged'); // Ensure default size
+        messageElement.innerHTML = ""; // Clear any message
+        remainingCountElement.innerHTML = recommendations.length - currentIndex; // Update remaining count
+    }
+}
+
+function swipeLeft() {
+    console.log("Left button clicked");
+
+    if (currentIndex < recommendations.length - 1) {
+        // Move to the next recommendation
+        currentIndex++;
+        displayRecommendation();
+    } else {
+        // Final image has been shown, now out of options
+        currentIndex++; // Increment to go past the last recommendation
+        displayRecommendation();
+    }
+}
+
+function swipeRight() {
+    console.log("Right button clicked");
+
+    const imageElement = document.getElementById('current-image');
+    const messageElement = document.getElementById('message');
+
+    if (currentIndex < recommendations.length) {
+        // Finalize the current pick
+        const item = recommendations[currentIndex];
+        imageElement.src = item.image.url;
+        imageElement.classList.add('enlarged'); // Add enlarged class
+        messageElement.innerHTML = "This is your pick!";
+
+        // Disable further interactions
+        document.getElementById("swipe-left").style.display = "none";
+        document.getElementById("swipe-right").style.display = "none";
+        document.getElementById('remaining-count').innerHTML = 1; // Show only one remaining
+    }
+}
+
+// Initialize recommendations on DOM load
+document.addEventListener('DOMContentLoaded', initializeRecommendations);
+
+</script>
+{% endblock %}

@@ -18,8 +18,10 @@
                         </div>
                     </button>
                 </div>
-                <input id="file-upload" type="file" name="image" style="display: none;" required />
-    
+                <input id="file-upload" type="file" name="image" style="display: none;" required onchange="validateFile()" />
+                <div id="error-message" style="display: none; color: #203239; background-color: #e0ddaa; padding: 10px; border-radius: 5px; position: fixed; top: 20px; right: 20px; z-index: 1000; opacity: 1; transition: opacity 1s;">
+                    File name cannot contain spaces. Please select another file or rename it.
+                </div>
                 <div style="flex: 1; padding-top: 20px; padding-bottom: 20px; padding-left: 10px;">
                     <button id="upload-button" type="submit" class="custom-button">
                         <div class="shadow"></div>
@@ -47,8 +49,6 @@
                 {% endfor %}
             </select>
     
-    
-    
             <h2>Predicted Color:</h2>
             <select id="predicted-color" name="predicted_color">
                 {% for label in color_labels %}
@@ -68,5 +68,33 @@
         {% endif %}
 
     </div>
-        
+    <script>
+        function validateFile() {
+            const fileInput = document.getElementById('file-upload');
+            const errorMessage = document.getElementById('error-message');
+            const file = fileInput.files[0];
+            
+            // Check if file name contains spaces
+            if (file && /\s/.test(file.name)) {
+                // Show the error message and reset its opacity
+                errorMessage.style.display = "block";
+                errorMessage.style.opacity = "1";
+                
+                // Clear the file input to prevent submission
+                fileInput.value = "";
+                
+                // Start fade-out effect after 4 seconds, then hide after 5 seconds
+                setTimeout(() => {
+                    errorMessage.style.opacity = "0"; // Start fading out
+                }, 4000);
+                
+                setTimeout(() => {
+                    errorMessage.style.display = "none"; // Hide after fade-out
+                }, 5000);
+            } else {
+                // Hide the error message if file name is valid
+                errorMessage.style.display = "none";
+            }
+        }
+        </script>
 {% endblock %}
