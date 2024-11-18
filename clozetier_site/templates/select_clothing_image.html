@@ -29,12 +29,12 @@
             </div>
 
             <!-- Image Info and Submit Button -->
-            <div style="text-align: center; margin-top: 20px;">
+            <div id ="submit-stuff" style="text-align: center; margin-top: 20px;">
                 <p id="image-info" style="font-size: 16px;"></p>
                 
                 <label for="clothing-article">What clothing article are you looking for?</label>
                 <select id="clothing-article-dropdown">
-                    <option value="No-Selection">Blazer</option>
+                    <option value="No-Selection">--All Categories--</option>
                     {% for label in clothing_labels %}
                     <option value="{{ label }}">{{ label }}</option>
                     {% endfor %}
@@ -66,9 +66,17 @@
             const image = document.getElementById('displayed-image');
             const info = document.getElementById('image-info');
             const counter = document.getElementById('image-counter');
+            const submit_stuff = document.getElementById('submit-stuff');
             
-            image.src = filteredItems[index].url;
-            info.textContent = `Color: ${filteredItems[index].color}, Type: ${filteredItems[index].type}`;
+            if (filteredItems[index] == undefined){
+                image.src = "/media/cat_oopsie.png"
+                info.textContent = `Color: cat, Type: meow meow`;
+                submit_stuff.style.display = 'none';
+            } else{
+                image.src = filteredItems[index].url;
+                info.textContent = `Color: ${filteredItems[index].color}, Type: ${filteredItems[index].type}`;
+                submit_stuff.style.display = 'block';
+            }
             
             // Update the counter (index starts from 1)
             counter.textContent = `${index + 1} / ${filteredItems.length}`;
