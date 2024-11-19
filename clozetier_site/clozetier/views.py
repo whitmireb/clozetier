@@ -329,3 +329,11 @@ def show_recommendations(request):
         'recommendations_json': serialized_recommendations,  # Pass to JavaScript
         'recommendations': recommendations,  # For rendering in HTML
     })
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def edit_profile(request):
+    return render(request, 'edit_profile.html', {'form': form})
+
