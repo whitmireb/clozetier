@@ -1,24 +1,22 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <h1>Edit Profile</h1>
+      <h1>Edit Profile</h1>
     </header>
     <main>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }} <!-- Renders the form fields -->
-            <button type="submit">Save Changes</button>
-        </form>
-        <footer>
-            <p><a href="{% url 'profile' %}">Back to Profile</a></p>
-        </footer>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }} <!-- Renders the form fields -->
+        <button type="submit">Save Changes</button>
+      </form>
     </main>
-</body>
+  </body>
 </html>
