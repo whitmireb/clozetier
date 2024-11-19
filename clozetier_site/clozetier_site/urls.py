@@ -37,6 +37,7 @@ urlpatterns = [
     path("", TemplateView.as_view(template_name="home.html"), name="home"),
     path('about/', TemplateView.as_view(template_name='about.html'), name='about'),
     path('contact/', TemplateView.as_view(template_name='contact.html'), name='contact'),
+    path('signup/', TemplateView.as_view(template_name='registration/signup.html'), name='signup')
 ]
 
 # Serving media files during development
@@ -45,8 +46,7 @@ if settings.DEBUG:
 
 # Additional URLs for accounts app
 urlpatterns += [
-    # User profile-related URLs
-    path("profile/", views.profile, name="profile"),  # User profile page
-    path("profile/edit/", views.edit_profile, name="edit_profile"),  # Edit user profile page
-    path("profile/activity/", views.activity_history, name="activity_history"),  # User activity history page
+    path("profile/", views.profile, name="profile"),  # User profile
+    path("profile/edit/", views.edit_profile, name="edit_profile"),  # Edit user profile
+    path("profile/activity/", views.activity_history, name="activity_history"),  # User activity history
 ]

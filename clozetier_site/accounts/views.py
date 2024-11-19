@@ -1,5 +1,5 @@
 # accounts/views.py
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm  # Added UserChangeForm import
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.shortcuts import render, redirect
@@ -14,22 +14,6 @@ class SignUpView(CreateView):
     template_name = "registration/signup.html"
 
 
-# New register view
-def register(request):
-    """
-    View for user registration. Renders a form for new users to create an account.
-    """
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Account created successfully! You can now log in.")
-            return redirect('login')
-    else:
-        form = UserCreationForm()
-    return render(request, 'registration/register.html', {'form': form})
-
-
 @login_required
 def profile(request):
     """
@@ -39,15 +23,6 @@ def profile(request):
     return render(request, 'profile.html')
 
 
-class CustomUserChangeForm(UserChangeForm):
-    """
-    Custom form for updating user information with selected fields.
-    """
-    class Meta:
-        model = User
-        fields = ('first_name', 'last_name', 'email')  # Limit fields to these only
-
-
 @login_required
 def edit_profile(request):
     """
@@ -55,13 +30,13 @@ def edit_profile(request):
     Accessible only to authenticated users.
     """
     if request.method == 'POST':
-        form = CustomUserChangeForm(request.POST, instance=request.user)
+        form = UserChangeForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, "Your profile has been updated!")
             return redirect('profile')  # Redirect to the profile page after saving
     else:
-        form = CustomUserChangeForm(instance=request.user)
+        form = UserChangeForm(instance=request.user)
     return render(request, 'edit_profile.html', {'form': form})
 
 

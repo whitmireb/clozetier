@@ -8,7 +8,12 @@ from . import views
 urlpatterns = [
     path('upload/', views.index, name='uploadPage'),
     path("save_item", views.save_item, name="save_item"),
+    path("clozet/", views.clozet_view, name='clozet'),
     path('outfit-creator/', views.outfit_creator_view, name='outfitCreator'),  # Add this line
     path('', views.index, name='index'),  # Main index page
-    # path('upload/', views.image_upload, name='image_upload'),
+    path('get_item_details/<int:item_id>/', views.get_item_details, name='get_item_details'),
+    path('delete_item/', views.delete_item, name='delete_item'),
+    path('create/', views.select_clothing, name='AIRecommendation'),
+    path('get_clothing_recommendations/', views.get_clothing_recommendations, name='get_clothing_recommendations'),
+    path('recommendations/', views.show_recommendations, name='show_recommendations'),
 ]
