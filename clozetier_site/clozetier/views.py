@@ -82,7 +82,6 @@ def index(request):
         'shoes': ['shoes'],
     }
 
-
     categorized_items = {
         'hats': [item for item in user_items if item.cloth_type in categories['hats']],
         'tops': [item for item in user_items if item.cloth_type in categories['tops']],
