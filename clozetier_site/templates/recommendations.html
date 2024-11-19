@@ -2,19 +2,19 @@
 {% block content %}
 <div class="image-container">
     <!-- Show image of the current recommendation -->
-    <img id="current-image" class="recommendation-image" src="{{ recommendations.0.image.url }}" alt="Recommendation">
+    <img id="current-image" class="recommendation-image" src="{{ recommendations.0.image.url }}" alt="Recommendation", style="width: 300px; height: auto; display: block; margin: 0 auto;">
 </div>
 
-<div id="message" class="message"></div>
+<div id="message" class="message" style="width: 300px; height: auto; display: block; margin: 0 auto;"></div>
 
 <!-- Show the number of remaining recommendations -->
-<div id="recommendation-count">
+<div id="recommendation-count" style="width: 300px; height: auto; display: block; margin: 0 auto;">
     <p>Recommendations left: <span id="remaining-count">{{ recommendations|length }}</span></p>
 </div>
 
-<div class="buttons">
+<div class="buttons" style="width: 500px; height: auto; display: block; margin: 0 auto;">
     <button id="swipe-left" class="button" onclick="swipeLeft()">Swipe Left (No)</button>
-    <button id="swipe-right" class="button" onclick="swipeRight()">Swipe Right (Yes)</button>
+    <button id="swipe-right" class="button" onclick="swipeRight()" style="float: right;">Swipe Right (Yes)</button>
 </div>
 
 <!-- Safely embed recommendations JSON for JavaScript -->
@@ -28,7 +28,8 @@ let currentIndex = 0;
 let totalRecommendations = 0;
 
 function initializeRecommendations() {
-    recommendations = JSON.parse(document.getElementById('recommendations-data').textContent);
+    {% comment %} recommendations = JSON.parse(document.getElementById('recommendations-data').textContent); {% endcomment %}
+    recommendations = JSON.parse('{{ recommendations_json|escapejs }}');
     currentIndex = 0;
     totalRecommendations = recommendations.length;
 

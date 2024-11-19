@@ -3,6 +3,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.files.storage import FileSystemStorage
 from .forms import ClothingItemForm
 from .models import ClothingItem
@@ -12,7 +13,6 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render
 from django.http import JsonResponse
-
 
 @login_required
 def index(request):
@@ -31,11 +31,14 @@ def index(request):
             clothing_labels = ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve', 
                                'pants', 'polo-shirt', 'shoes', 'shorts', 'skirt', 'T-shirt', 'under-shirt']
             
+            
+            clothing_labels = ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve', 
+                               'pants', 'polo-shirt', 'shoes', 'shorts', 'skirt', 'T-shirt', 'under-shirt']
+            
             color_labels = ['Black', 'Blue', 'Brown', 'Cream', 'Dark-Blue', 'Dark-Brown',
                             'Dark-Gray', 'Dark-Green', 'Dark-Red', 'Gold', 'Gray', 'Green',
                             'Light-Blue', 'Light-Gray', 'Light-Green', 'Light-Red', 'Orange',
                             'Peach', 'Pink', 'Purple', 'Red', 'White', 'Yellow']
-
 
             clothing_label = clothing_labels[clothing_result]
             
@@ -46,6 +49,7 @@ def index(request):
             # Categorize items
             categories = {
                 'hats': ['hat'],
+                'tops': ['T-shirt', 'longsleeve', 'polo-shirt', 'hoodie', 'buttondown-shirt', 'blazer', 'dress'],
                 'tops': ['T-shirt', 'longsleeve', 'polo-shirt', 'hoodie', 'buttondown-shirt', 'blazer', 'dress'],
                 'bottoms': ['pants', 'shorts', 'skirt'],
                 'shoes': ['shoes'],
@@ -94,7 +98,7 @@ def index(request):
         'form': form,
         'categorized_items': categorized_items,
         'items': user_items})
-
+    
 @login_required
 def save_item(request):
     if request.method == 'POST':
@@ -182,10 +186,9 @@ def delete_item(request):
         messages.success(request, 'Item deleted successfully!')
         return redirect('clozet')  # Redirect back to the outfit creator view
 
-
 @login_required
 def select_clothing(request):
-    clothing_items = ClothingItem.objects.all()
+    clothing_items = ClothingItem.objects.filter(user=request.user)
     clothing_labels = ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve', 
                        'pants', 'polo-shirt', 'shoes', 'shorts', 'skirt', 'T-shirt', 'under-shirt']
     
@@ -281,8 +284,7 @@ def get_clothing_recommendations(request):
             return JsonResponse({"success": False, "error": "Missing data fields"}, status=400)
 
         # Get recommendations using recommend_clothing function
-        recommendations = recommend_clothing(selected_item_color, clothing_article)
-
+        recommendations = recommend_clothing(selected_item_color, clothing_article, request.user)
         # Save recommendations to the session to access them in /recommendations/
         request.session['recommendations'] = [item.id for item in recommendations]  # Store IDs or serialize items as needed
 
@@ -294,12 +296,16 @@ def get_clothing_recommendations(request):
 
     return JsonResponse({"success": False, "error": "Invalid request"}, status=400)
 
-def recommend_clothing(selected_color, clothing_article):
+def recommend_clothing(selected_color, clothing_article, active_user):
     matching_colors = COLOR_RECOMMENDATIONS.get(selected_color, [])
     recommended_items = []
 
     # Get clothing items that match the color and type
-    clothing_items = ClothingItem.objects.filter(cloth_type=clothing_article)
+
+    if (clothing_article == "No-Selection"):
+        clothing_items = ClothingItem.objects.filter(user=active_user)
+    else:
+        clothing_items = ClothingItem.objects.filter(cloth_type=clothing_article, user=active_user)
     for item in clothing_items:
         if item.cloth_color in matching_colors:
             recommended_items.append(item)
@@ -308,6 +314,10 @@ def recommend_clothing(selected_color, clothing_article):
 
 from django.core.serializers import serialize
 from django.http import JsonResponse
+
+import json
+from django.shortcuts import render
+from .models import ClothingItem
 
 def show_recommendations(request):
     # Retrieve recommendations from session
@@ -324,17 +334,12 @@ def show_recommendations(request):
         }
         for item in recommendations
     ]
+    
+    # Convert Python data to JSON string for proper JavaScript usage
+    recommendations_json = json.dumps(serialized_recommendations)
 
     # Pass serialized recommendations to the template
     return render(request, 'recommendations.html', {
-        'recommendations_json': serialized_recommendations,  # Pass to JavaScript
+        'recommendations_json': recommendations_json,  # Pass to JavaScript
         'recommendations': recommendations,  # For rendering in HTML
     })
-
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-
-@login_required
-def edit_profile(request):
-    return render(request, 'edit_profile.html', {'form': form})
-
