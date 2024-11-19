@@ -40,12 +40,6 @@ def index(request):
                             'Light-Blue', 'Light-Gray', 'Light-Green', 'Light-Red', 'Orange',
                             'Peach', 'Pink', 'Purple', 'Red', 'White', 'Yellow']
 
-
-                            'Dark-Gray', 'Dark-Green', 'Dark-Red', 'Gold', 'Gray', 'Green',
-                            'Light-Blue', 'Light-Gray', 'Light-Green', 'Light-Red', 'Orange',
-                            'Peach', 'Pink', 'Purple', 'Red', 'White', 'Yellow']
-
-
             clothing_label = clothing_labels[clothing_result]
             
             # Save to database
@@ -104,8 +98,7 @@ def index(request):
         'form': form,
         'categorized_items': categorized_items,
         'items': user_items})
-        'items': user_items})
-
+    
 @login_required
 def save_item(request):
     if request.method == 'POST':
