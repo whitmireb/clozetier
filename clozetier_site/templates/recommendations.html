@@ -44,6 +44,7 @@ function displayRecommendation() {
     if (currentIndex >= recommendations.length) {
         // Out of recommendations
         messageElement.innerHTML = "You are out of options";
+        document.getElementById('recommendation-count').style.display = 'none'; 
         imageElement.style.display = "none";
         document.getElementById("swipe-left").style.display = "none";
         document.getElementById("swipe-right").style.display = "none";
