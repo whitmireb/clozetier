@@ -182,7 +182,7 @@ def delete_item(request):
         messages.success(request, 'Item deleted successfully!')
         return redirect('clozet')  # Redirect back to the outfit creator view
 
-
+@login_required
 def select_clothing(request):
     clothing_items = ClothingItem.objects.all()
     clothing_labels = ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve', 
