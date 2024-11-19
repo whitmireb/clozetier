@@ -187,15 +187,23 @@ def delete_item(request):
         return redirect('clozet')  # Redirect back to the outfit creator view
 
 @login_required
-def select_clothing(request):
-    clothing_items = ClothingItem.objects.filter(user=request.user)
+def select_clothing(request, item_id=0):
+    clothing_items = ClothingItem.objects.filter(user=request.user).order_by('id')
     clothing_labels = ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve', 
                        'pants', 'polo-shirt', 'shoes', 'shorts', 'skirt', 'T-shirt', 'under-shirt']
     
+    if item_id != 0:
+        item = get_object_or_404(clothing_items, id=item_id)
+        user_items = list(clothing_items)
+        user_specific_id = user_items.index(item)
+    else:
+        user_specific_id = 0
+
     is_empty = not clothing_items.exists()
     return render(request, 'select_clothing_image.html', {
         'clothing_items': clothing_items,
         'clothing_labels': clothing_labels,
+        'item_id': user_specific_id,
         'is_empty': is_empty
     })
 
