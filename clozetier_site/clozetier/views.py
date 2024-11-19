@@ -3,6 +3,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.files.storage import FileSystemStorage
 from .forms import ClothingItemForm
 from .models import ClothingItem
@@ -30,7 +31,16 @@ def index(request):
             clothing_labels = ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve', 
                                'pants', 'polo-shirt', 'shoes', 'shorts', 'skirt', 'T-shirt', 'under-shirt']
             
+            
+            clothing_labels = ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve', 
+                               'pants', 'polo-shirt', 'shoes', 'shorts', 'skirt', 'T-shirt', 'under-shirt']
+            
             color_labels = ['Black', 'Blue', 'Brown', 'Cream', 'Dark-Blue', 'Dark-Brown',
+                            'Dark-Gray', 'Dark-Green', 'Dark-Red', 'Gold', 'Gray', 'Green',
+                            'Light-Blue', 'Light-Gray', 'Light-Green', 'Light-Red', 'Orange',
+                            'Peach', 'Pink', 'Purple', 'Red', 'White', 'Yellow']
+
+
                             'Dark-Gray', 'Dark-Green', 'Dark-Red', 'Gold', 'Gray', 'Green',
                             'Light-Blue', 'Light-Gray', 'Light-Green', 'Light-Red', 'Orange',
                             'Peach', 'Pink', 'Purple', 'Red', 'White', 'Yellow']
@@ -45,6 +55,7 @@ def index(request):
             # Categorize items
             categories = {
                 'hats': ['hat'],
+                'tops': ['T-shirt', 'longsleeve', 'polo-shirt', 'hoodie', 'buttondown-shirt', 'blazer', 'dress'],
                 'tops': ['T-shirt', 'longsleeve', 'polo-shirt', 'hoodie', 'buttondown-shirt', 'blazer', 'dress'],
                 'bottoms': ['pants', 'shorts', 'skirt'],
                 'shoes': ['shoes'],
@@ -92,6 +103,7 @@ def index(request):
     return render(request, 'index.html', {
         'form': form,
         'categorized_items': categorized_items,
+        'items': user_items})
         'items': user_items})
 
 @login_required

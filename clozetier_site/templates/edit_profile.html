@@ -1,24 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
-    <header>
-        <h1>Edit Profile</h1>
-    </header>
-    <main>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }} <!-- Renders the form fields -->
-            <button type="submit">Save Changes</button>
-        </form>
-        <footer>
-            <p><a href="{% url 'profile' %}">Back to Profile</a></p>
-        </footer>
-    </main>
-</body>
-</html>
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<header>
+  <h1>Edit Profile</h1>
+</header>
+<main>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }} <!-- Renders the form fields -->
+    <button type="submit">Save Changes</button>
+  </form>
+</main>
+{% endblock %}
