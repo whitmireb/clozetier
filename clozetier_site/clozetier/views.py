@@ -1,12 +1,10 @@
-# clozetier/views.py
-
+from django.contrib.auth import logout
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
-from .forms import ClothingItemForm
-from .models import ClothingItem
 from django.conf import settings
+from .forms import ClothingItemForm, EditProfileForm  # Import EditProfileForm
+from .models import ClothingItem
 from .model_utils import run_image_through_models
 
 @login_required
@@ -126,4 +124,47 @@ def outfit_creator_view(request):
     # Pass categorized items to the outfitCreator template
     return render(request, 'outfitCreator.html', {
         'categorized_items': categorized_items
+    })
+
+@login_required
+def edit_profile(request):
+    """
+    View to handle profile editing.
+    Allows the user to update their username, email, profile picture, and password.
+    """
+    user = request.user
+
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, request.FILES, instance=user)
+
+        if form.is_valid():
+            # Save user updates (username, email, etc.)
+            updated_user = form.save(commit=False)
+            
+            # Handle profile picture separately if uploaded
+            if 'profile_picture' in request.FILES:
+                fs = FileSystemStorage(location=settings.MEDIA_ROOT)
+                filename = fs.save(request.FILES['profile_picture'].name, request.FILES['profile_picture'])
+                updated_user.profile_picture = filename
+            
+            # Update the password if provided
+            password = form.cleaned_data.get('password')
+            if password:
+                updated_user.set_password(password)
+            
+            updated_user.save()
+            messages.success(request, "Your profile has been updated successfully.")
+
+            # Log the user out after password change
+            logout(request)
+            return redirect('login')  # Redirect to login after password change
+        else:
+            messages.error(request, "Error updating your profile. Please check the form.")
+
+    else:
+        # Prepopulate form with current user data
+        form = EditProfileForm(instance=user)
+
+    return render(request, 'edit_profile.html', {
+        'form': form,
     })
