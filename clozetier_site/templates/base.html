@@ -222,17 +222,27 @@
         padding-top: 20px;
       }
 
+      /* Sidebar My Profile link */
       .profile-link a {
-        color: white;
-        text-decoration: none;
-        font-weight: bold;
-        padding: 10px;
-        border-radius: 5px;
+        position: relative;
+        top: -25px; /* Move up by 5 pixels */
+          display: inline-block;
+          background-color: var(--accent);
+          color: var(--text);
+          text-decoration: none;
+          font-weight: bold;
+          padding: 10px 15px;
+          border-radius: 5px;
+          margin: 10px 0;
+          text-align: center;
+          transition: background-color 0.3s ease;
       }
-
+      
       .profile-link a:hover {
-        background-color: #555;
+          background-color: var(--secondary);
+          color: var(--alt_text);
       }
+      
 
       .side-panel {
         position: fixed;
@@ -265,6 +275,35 @@
       #side-panel-content p {
         margin: 5px 0;
       }
+
+      /* General button style */
+      .button {
+          display: inline-block;
+          background-color: var(--accent);
+          color: var(--text);
+          text-decoration: none;
+          font-weight: bold;
+          padding: 10px 15px;
+          border-radius: 5px;
+          text-align: center;
+          border: none;
+          cursor: pointer;
+          transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      /* Hover effect for all buttons */
+      .button:hover {
+          background-color: var(--secondary);
+          color: var(--alt_text);
+          transform: translateY(-2px);
+      }
+
+      /* Active state */
+      .button:active {
+          background-color: var(--secondary);
+          transform: translateY(0);
+      }
+      
     </style>
   </head>
 
@@ -287,9 +326,10 @@
       <a href="{% url 'contact' %}">Contact</a>
 
       <!-- My Profile link at the bottom -->
-      <div class="profile-link">
+      {% comment %} <div class="profile-link">
         <a href="{% url 'profile' %}">My Profile</a>
-      </div>
+      </div> {% endcomment %}
+      
     </div>
     <script>
       function toggleDropdown(event) {
@@ -303,6 +343,9 @@
     <div class="main-content">
       <div class="top-bar">
         {% if user.is_authenticated %}
+        <div class="profile-link">
+          <a href="{% url 'profile' %}">My Profile</a>
+      </div>
         <form action="{% url 'logout' %}" method="post">
           {% csrf_token %}
           <button type="submit">Log Out</button>
