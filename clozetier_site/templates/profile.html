@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Link to a CSS file -->
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="profile-section">
     <header>
         <h1>My Profile</h1>
     </header>
@@ -26,8 +22,33 @@
         <footer>
             <p><a href="{% url 'logout' %}">Logout</a></p>
             <p><a href="{% url 'edit_profile' %}">Edit Profile</a></p>
-            <p><a href="{% url 'activity_history' %}">View Activity History</a></p>
         </footer>
     </main>
-</body>
-</html>
+</div>
+
+<style>
+    /* Custom styling for profile page */
+    .profile-section {
+        padding: 20px;
+        background-color: #222; /* Dark background for main content */
+        color: #eee; /* Light text for readability */
+    }
+
+    header h1 {
+        color: #4db8ff; /* Light blue color for header */
+    }
+
+    h2 {
+        color: #ff4d4d; /* Red color for secondary headings */
+    }
+
+    footer a {
+        color: #4db8ff; /* Matching link color */
+        text-decoration: none;
+    }
+
+    footer a:hover {
+        color: #ff4d4d; /* Hover color for links */
+    }
+</style>
+{% endblock %}

@@ -4,21 +4,131 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
+    {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        /* Ensure the entire page background is dark */
+        html, body {
+            background-color: #222; /* Dark background for full page */
+            color: #eee; /* Light text for readability */
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        /* Sidebar styles from base.html */
+        .sidebar {
+            width: 250px;
+            background-color: #111; /* Dark background */
+            color: #fff; /* White text */
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Full height of the viewport */
+        }
+
+        .sidebar a {
+            color: #ccc; /* Light grey text */
+            text-decoration: none;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .sidebar a:hover {
+            background-color: #333; /* Slightly lighter dark background */
+        }
+
+        /* Layout styling to place sidebar and content side by side */
+        .container {
+            display: flex;
+            min-height: 100vh; /* Full height layout */
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        header h1 {
+            color: #4db8ff; /* Light blue color for header */
+        }
+
+        label {
+            color: #ccc; /* Light grey text for form labels */
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        button {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            background-color: #333;
+            color: #eee;
+        }
+
+        button {
+            background-color: #4db8ff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #006bb3; /* Darker blue for hover effect */
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Edit Profile</h1>
-    </header>
-    <main>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }} <!-- Renders the form fields -->
-            <button type="submit">Save Changes</button>
-        </form>
-        <footer>
-            <p><a href="{% url 'profile' %}">Back to Profile</a></p>
-        </footer>
-    </main>
+    <div class="container">
+        <!-- Sidebar section -->
+        <nav class="sidebar">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'profile' %}">Profile</a>
+            <a href="{% url 'about' %}">About</a>
+            <a href="{% url 'contact' %}">Contact</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </nav>
+
+        <!-- Main edit profile content -->
+        <div class="main-content">
+            <header>
+                <h1>Edit Profile</h1>
+            </header>
+            <main>
+                <form method="post" action="{% url 'edit_profile' %}">
+                    {% csrf_token %}
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" value="{{ user.username }}">
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" value="{{ user.email }}">
+
+                    <hr>
+
+                    <h2>Change Password</h2>
+
+                    <label for="current_password">Current Password:</label>
+                    <input type="password" id="current_password" name="current_password" placeholder="Enter current password">
+
+                    <label for="new_password">New Password:</label>
+                    <input type="password" id="new_password" name="new_password" placeholder="Enter new password">
+
+                    <label for="confirm_password">Confirm New Password:</label>
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm new password">
+
+                    <button type="submit">Save Changes</button>
+                </form>
+            </main>
+        </div>
+    </div>
 </body>
 </html>

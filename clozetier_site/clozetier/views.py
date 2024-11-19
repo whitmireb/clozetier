@@ -24,12 +24,12 @@ def index(request):
             clothing_result, color_result = run_image_through_models(fs.path(filename))
             clothing_labels = ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve', 'pants', 'polo-shirt', 'shoes', 'shorts', 'skirt', 'T-shirt', 'under-shirt']
             color_labels = ['Black', 'Blue', 'Brown', 'Cream', 'Dark-Blue', 'Dark-Brown',
-       'Dark-Gray', 'Dark-Green', 'Dark-Red', 'Gold', 'Gray', 'Green',
-       'Light-Blue', 'Light-Gray', 'Light-Green', 'Light-Red', 'Orange',
-       'Peach', 'Pink', 'Purple', 'Red', 'White', 'Yellow']
+                            'Dark-Gray', 'Dark-Green', 'Dark-Red', 'Gold', 'Gray', 'Green',
+                            'Light-Blue', 'Light-Gray', 'Light-Green', 'Light-Red', 'Orange',
+                            'Peach', 'Pink', 'Purple', 'Red', 'White', 'Yellow']
             clothing_label = clothing_labels[clothing_result]
             
-            # Save to database
+            # Save to database (commented out for safety; uncomment to save)
             # uploaded_image = ClothingItem(user=request.user, image=filename, cloth_type=clothing_label, cloth_color=color_result)
             # uploaded_image.save()
 
@@ -50,7 +50,7 @@ def index(request):
                 'shoes': [item for item in user_items if item.cloth_type in categories['shoes']],
             }
 
-            # Pass to context directly (optional)
+            # Pass to context directly
             context = {
                 'predicted_type': clothing_label,
                 'predicted_color': color_result,
@@ -61,6 +61,8 @@ def index(request):
                 'form': form,
             }
             return render(request, 'index.html', context)
+        else:
+            messages.error(request, 'Form submission failed. Please check the input.')
 
     else:
         form = ClothingItemForm()
@@ -92,7 +94,7 @@ def save_item(request):
     if request.method == 'POST':
         image = request.POST['image']
         predicted_type = request.POST['predicted_type']
-        predicted_color = request.POST['predicted_color']
+        predicted_color = request.POST.get('predicted_color', 'Unknown')  # Ensure color fallback if missing
         
         # Create and save the ClothingItem instance
         uploaded_image = ClothingItem(user=request.user, image=image, cloth_type=predicted_type, cloth_color=predicted_color)
