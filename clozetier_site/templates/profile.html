@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-card">
+        <div class="profile-header">
+            <h1>My Profile</h1>
+            <h2>Welcome, {{ user.username }}!</h2>
+        </div>
+        <div class="profile-info">
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p>This is your profile page where you can:</p>
+            <ul>
+                <li>View your account details</li>
+                <li>Edit your profile information</li>
+                <li>Change your password</li>
+                <li>View your activity history</li>
+                <li>Log out of your account</li>
+            </ul>
+        </div>
+        <div class="profile-actions">
+            <a href="{% url 'edit_profile' %}" class="button primary-button">Edit Profile</a>
+            <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="button logout-button">Log Out</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

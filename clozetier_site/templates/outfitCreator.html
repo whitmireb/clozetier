@@ -1,0 +1,67 @@
+<!-- outfitCreator.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Outfit Creator</h2>
+
+<div class="outfit-section">
+    <h3>Hats</h3>
+    <div class="scrollable">
+        {% for item in categorized_items.hats %}
+        <img src="{{ item.image.url }}" alt="Hat" class="outfit-image">
+        {% empty %}
+        <p>No hats available.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="outfit-section">
+    <h3>Tops</h3>
+    <div class="scrollable">
+        {% for item in categorized_items.tops %}
+        <img src="{{ item.image.url }}" alt="Top" class="outfit-image">
+        {% empty %}
+        <p>No tops available.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="outfit-section">
+    <h3>Bottoms</h3>
+    <div class="scrollable">
+        {% for item in categorized_items.bottoms %}
+        <img src="{{ item.image.url }}" alt="Bottom" class="outfit-image">
+        {% empty %}
+        <p>No bottoms available.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="outfit-section">
+    <h3>Shoes</h3>
+    <div class="scrollable">
+        {% for item in categorized_items.shoes %}
+        <img src="{{ item.image.url }}" alt="Shoes" class="outfit-image">
+        {% empty %}
+        <p>No shoes available.</p>
+        {% endfor %}
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Select all elements with the class 'scrollable'
+        const scrollables = document.querySelectorAll(".scrollable");
+
+        scrollables.forEach(scrollable => {
+            // Add the scroll event listener to each element
+            scrollable.addEventListener("wheel", function (event) {
+                // Redirect vertical scroll to horizontal scroll
+                if (event.deltaY !== 0) {
+                    scrollable.scrollLeft += event.deltaY; // Adjust for scroll speed if needed
+                    event.preventDefault(); // Prevent default vertical scrolling
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
