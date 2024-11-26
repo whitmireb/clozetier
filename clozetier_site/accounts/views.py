@@ -4,23 +4,9 @@ from django.views.generic import CreateView
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.contrib.auth.models import User
-from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login
-from django.shortcuts import render, redirect
+from .forms import CustomPasswordChangeForm, EditProfileForm  # Import custom forms
+from django.contrib.auth import update_session_auth_hash
 
-def signup(request):
-    if request.method == 'POST':  # Handle form submission
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()  # Save the new user
-            login(request, user)  # Log in the new user
-            return redirect('home')  # Redirect to the homepage
-    else:  # Handle GET requests to display the signup form
-        form = UserCreationForm()
-
-    return render(request, 'registration/signup.html', {'form': form})
 
 class SignUpView(CreateView):
     """
