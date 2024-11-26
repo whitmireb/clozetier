@@ -31,10 +31,6 @@ def index(request):
             clothing_labels = ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve', 
                                'pants', 'polo-shirt', 'shoes', 'shorts', 'skirt', 'T-shirt', 'under-shirt']
             
-            
-            clothing_labels = ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve', 
-                               'pants', 'polo-shirt', 'shoes', 'shorts', 'skirt', 'T-shirt', 'under-shirt']
-            
             color_labels = ['Black', 'Blue', 'Brown', 'Cream', 'Dark-Blue', 'Dark-Brown',
                             'Dark-Gray', 'Dark-Green', 'Dark-Red', 'Gold', 'Gray', 'Green',
                             'Light-Blue', 'Light-Gray', 'Light-Green', 'Light-Red', 'Orange',
@@ -295,7 +291,6 @@ def get_clothing_recommendations(request):
         recommendations = recommend_clothing(selected_item_color, clothing_article, request.user)
         # Save recommendations to the session to access them in /recommendations/
         request.session['recommendations'] = [item.id for item in recommendations]  # Store IDs or serialize items as needed
-        request.session['prev_image'] = selected_item_id
 
         data = {
             "success": True,
@@ -331,10 +326,7 @@ from .models import ClothingItem
 def show_recommendations(request):
     # Retrieve recommendations from session
     recommendation_ids = request.session.get('recommendations', [])
-    prev_image_id = request.session.get('prev_image')
-    recommendations = ClothingItem.objects.filter(id__in=recommendation_ids).exclude(id=prev_image_id)
-    prev_image = ClothingItem.objects.filter(id=prev_image_id)[0]
-    print(prev_image.image.url)
+    recommendations = ClothingItem.objects.filter(id__in=recommendation_ids)
 
     # Serialize recommendations into a JSON-friendly format
     serialized_recommendations = [
@@ -354,5 +346,4 @@ def show_recommendations(request):
     return render(request, 'recommendations.html', {
         'recommendations_json': recommendations_json,  # Pass to JavaScript
         'recommendations': recommendations,  # For rendering in HTML
-        'prev_image': prev_image.image,
     })
