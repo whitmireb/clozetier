@@ -85,6 +85,11 @@
         button:hover {
             background-color: #006bb3; /* Darker blue for hover effect */
         }
+
+        /* Form container to space out forms */
+        .form-container {
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 <body>
@@ -104,29 +109,32 @@
                 <h1>Edit Profile</h1>
             </header>
             <main>
-                <form method="post" action="{% url 'edit_profile' %}">
-                    {% csrf_token %}
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" value="{{ user.username }}">
+                <!-- Profile Edit Form -->
+                <div class="form-container">
+                    <form method="post" action="{% url 'edit_profile' %}">
+                        {% csrf_token %}
+                        <h2>Update Your Information</h2>
+                        <!-- Render the EditProfileForm dynamically -->
+                        {{ form.as_p }}
+                        <button type="submit">Save Changes</button>
+                    </form>
+                </div>
 
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" value="{{ user.email }}">
+                <hr>
 
-                    <hr>
-
+                <!-- Password Change Form -->
+                <div class="form-container">
                     <h2>Change Password</h2>
-
-                    <label for="current_password">Current Password:</label>
-                    <input type="password" id="current_password" name="current_password" placeholder="Enter current password">
-
-                    <label for="new_password">New Password:</label>
-                    <input type="password" id="new_password" name="new_password" placeholder="Enter new password">
-
-                    <label for="confirm_password">Confirm New Password:</label>
-                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm new password">
-
-                    <button type="submit">Save Changes</button>
-                </form>
+                    {% if password_change_form %}
+                        <form method="post" action="{% url 'password_change' %}">
+                            {% csrf_token %}
+                            {{ password_change_form.as_p }}
+                            <button type="submit">Change Password</button>
+                        </form>
+                    {% else %}
+                        <p>Password change form is not available.</p>
+                    {% endif %}
+                </div>
             </main>
         </div>
     </div>
