@@ -17,4 +17,6 @@ urlpatterns = [
     path('create/<int:item_id>/', views.select_clothing, name='AIRecommendation'),
     path('get_clothing_recommendations/', views.get_clothing_recommendations, name='get_clothing_recommendations'),
     path('recommendations/', views.show_recommendations, name='show_recommendations'),
+    path('signup/', views.signup, name='signup'),  # Add the signup URL
+
 ]
