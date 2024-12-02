@@ -13,6 +13,21 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+from django.shortcuts import render, redirect
+
+def signup(request):
+    if request.method == 'POST':  # Handle form submission
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()  # Save the new user
+            login(request, user)  # Log the user in after successful signup
+            return redirect('index')  # Redirect to the homepage or any desired page
+    else:  # Handle GET requests (load the signup form)
+        form = UserCreationForm()
+
+    return render(request, 'registration/signup.html', {'form': form})
 
 @login_required
 def index(request):

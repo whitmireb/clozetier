@@ -20,7 +20,7 @@ from django.views.generic.base import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
 from accounts import views  # Import views from accounts app
-
+from accounts.views import signup
 urlpatterns = [
     # Admin site path
     path('admin/', admin.site.urls),
@@ -30,7 +30,7 @@ urlpatterns = [
     path("", TemplateView.as_view(template_name="home.html"), name="home"),
     path('about/', TemplateView.as_view(template_name='about.html'), name='about'),
     path('contact/', TemplateView.as_view(template_name='contact.html'), name='contact'),
-    path('signup/', TemplateView.as_view(template_name='registration/signup.html'), name='signup')
+    path('accounts/signup/', signup, name='signup'),  # Correctly route to the signup view
 ]
 
 # Serving media files during development

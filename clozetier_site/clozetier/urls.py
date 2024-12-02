@@ -24,7 +24,7 @@ urlpatterns = [
     path('contact/', TemplateView.as_view(template_name='contact.html'), name='contact'),
 
     # Accounts URLs (for user authentication and profile management)
-    path('signup/', accounts_views.signup, name='signup'),  # Add the signup URL,  # Signup view for new users
+    path('signup/', views.signup, name='signup'),  # Add the signup URL,  # Signup view for new users
     path('profile/', accounts_views.profile, name='profile'),  # User profile page
     path('profile/edit/', accounts_views.edit_profile, name='edit_profile'),  # Edit user profile
     path('profile/activity/', accounts_views.activity_history, name='activity_history'),  # User activity history
