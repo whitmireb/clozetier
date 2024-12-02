@@ -226,23 +226,24 @@
       /* Sidebar My Profile link */
       .profile-link a {
         position: relative;
-        top: -25px; /* Move up by 5 pixels */
-        display: inline-block;
-        background-color: var(--accent);
-        color: var(--text);
-        text-decoration: none;
-        font-weight: bold;
-        padding: 10px 15px;
-        border-radius: 5px;
-        margin: 10px 0;
-        text-align: center;
-        transition: background-color 0.3s ease;
+        top: -24px; /* Move up by 5 pixels */
+          display: inline-block;
+          background-color: var(--accent);
+          color: var(--text);
+          text-decoration: none;
+          font-weight: bold;
+          padding: 10px 15px;
+          border-radius: 5px;
+          margin: 10px 0;
+          text-align: center;
+          transition: background-color 0.3s ease;
       }
       
       .profile-link a:hover {
-        background-color: var(--secondary);
-        color: var(--alt_text);
+          background-color: var(--secondary);
+          color: var(--alt_text);
       }
+      
 
       .side-panel {
         position: fixed;
@@ -284,12 +285,14 @@
         color: var(--text);
         text-decoration: none;
         font-weight: bold;
-        padding: 10px 15px;
+        padding: 10px 15px; /* Match padding with .profile-link a */
         border-radius: 5px;
+        margin: 10px 0; /* Add spacing around buttons if needed */
         text-align: center;
         border: none;
         cursor: pointer;
         transition: background-color 0.3s ease, transform 0.2s ease;
+        font-size: 1rem; /* Ensure text size matches */
       }
 
       /* Hover effect for all buttons */
@@ -319,7 +322,7 @@
           <a href="{% url 'index' %}">Upload</a>
           <a href="{% url 'clozet' %}">Clozet</a>
           {% comment %} <a href="{% url 'outfitCreator' %}">Outfit Creator</a> {% endcomment %}
-          <a href="{% url 'AIRecommendation' %}">AI Recommendation</a>
+          <a href="{% url 'AIRecommendation' %}">AI Reccomendation</a>
           {% comment %} <a href="{% url 'option2' %}"></a> {% endcomment %}
         </div>
       </div>
@@ -329,32 +332,58 @@
       {% comment %} <div class="profile-link">
         <a href="{% url 'profile' %}">My Profile</a>
       </div> {% endcomment %}
-      {% if user.is_authenticated %}
-        <div class="profile-link">
-          <a href="{% url 'profile' %}">My Profile</a>
-        </div>
-      {% endif %}
     </div>
+    <script>
+      function toggleDropdown(event) {
+        event.preventDefault();
+        var dropdown = document.getElementById("clozetierDropdown");
+        dropdown.style.display =
+          dropdown.style.display === "block" ? "none" : "block";
+      }
+    </script>
 
     <div class="main-content">
       <div class="top-bar">
         {% if user.is_authenticated %}
-          <button class="button">Logout</button>
+        <div class="profile-link">
+          <a href="{% url 'profile' %}" class="button">My Profile</a>
+        </div>
+        
+        <form action="{% url 'logout' %}" method="post" style="margin: 15px 0;">
+          {% csrf_token %}
+          <button type="submit" class="button">Log Out</button>
+        </form>
         {% else %}
-          <button class="button">Login</button>
+        <a href="{% url 'signup' %}"><button>Sign Up</button></a>
+        <a href="{% url 'login' %}"><button>Login</button></a>
         {% endif %}
       </div>
-
       <div class="content">
-        {% block content %}{% endblock %}
+        {% block content %}
+        <!-- Content will be injected here -->
+        {% endblock %}
       </div>
     </div>
 
     <script>
-      function toggleDropdown(event) {
-        const dropdownContent = document.getElementById("clozetierDropdown");
-        dropdownContent.style.display = dropdownContent.style.display === "block" ? "none" : "block";
-      }
+      let lastFileName = "";
+
+      document
+        .getElementById("file-upload-button")
+        .addEventListener("click", function () {
+          document.getElementById("file-upload").click();
+        });
+
+      document
+        .getElementById("file-upload")
+        .addEventListener("change", function () {
+          if (this.files.length > 0) {
+            lastFileName = this.files[0].name;
+            document
+              .getElementById("file-upload-button")
+              .querySelector("span").textContent = lastFileName;
+          }
+        });
     </script>
   </body>
 </html>
