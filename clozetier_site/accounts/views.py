@@ -7,6 +7,17 @@ from django.contrib import messages
 from .forms import CustomPasswordChangeForm, EditProfileForm  # Import custom forms
 from django.contrib.auth import update_session_auth_hash
 
+def signup(request):
+    if request.method == 'POST':  # Handle form submission
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()  # Save the new user
+            login(request, user)  # Log in the new user
+            return redirect('home')  # Redirect to the homepage
+    else:  # Handle GET requests to display the signup form
+        form = UserCreationForm()
+
+    return render(request, 'registration/signup.html', {'form': form})
 
 class SignUpView(CreateView):
     """
