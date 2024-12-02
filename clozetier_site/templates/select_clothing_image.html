@@ -96,13 +96,9 @@
 
         // Handle submission of the selected image and the article they are looking for
         function submitSelection() {
-            alert("it's between these two!")
             const selectedItem = filteredItems[currentIndex];
-            alert("1")
             const clothingArticle = document.getElementById("clothing-article-dropdown").value;
-            alert("2")
             const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-            alert("3")
 
             const formData = new FormData();
             formData.append('selected_item_id', selectedItem.id);
