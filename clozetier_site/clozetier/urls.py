@@ -15,6 +15,7 @@ urlpatterns = [
     path('get_item_details/<int:item_id>/', views.get_item_details, name='get_item_details'),
     path('delete_item/', views.delete_item, name='delete_item'),
     path('create/', views.select_clothing, name='AIRecommendation'),
+    path('create/<int:item_id>/', views.select_clothing, name='AIRecommendation'),
     path('get_clothing_recommendations/', views.get_clothing_recommendations, name='get_clothing_recommendations'),
     path('recommendations/', views.show_recommendations, name='show_recommendations'),
 
@@ -23,7 +24,7 @@ urlpatterns = [
     path('contact/', TemplateView.as_view(template_name='contact.html'), name='contact'),
 
     # Accounts URLs (for user authentication and profile management)
-    path('signup/', accounts_views.SignUpView.as_view(), name='signup'),  # Signup view for new users
+    path('signup/', views.signup, name='signup'),  # Add the signup URL,  # Signup view for new users
     path('profile/', accounts_views.profile, name='profile'),  # User profile page
     path('profile/edit/', accounts_views.edit_profile, name='edit_profile'),  # Edit user profile
     path('profile/activity/', accounts_views.activity_history, name='activity_history'),  # User activity history

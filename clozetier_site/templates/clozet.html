@@ -79,6 +79,9 @@
         <input type="hidden" name="item_id" id="item-id" />
         <button type="submit">Delete</button>
       </form>
+      <form id="recommendation-form" method="get">
+        <button type="submit">Recommendations</button>
+      </form>
     </div>
   </div>
 </div>
@@ -99,6 +102,10 @@
           "item-color"
         ).textContent = `Color: ${data.cloth_color}`;
         document.getElementById("item-id").value = itemId;
+
+        const recommendationForm = document.getElementById("recommendation-form");
+        const url = "{% url 'AIRecommendation' 0 %}".replace("0", itemId);
+        recommendationForm.action = url;
 
         // Show the side panel
         document.getElementById("side-panel").style.display = "block";

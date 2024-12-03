@@ -28,6 +28,7 @@ class EditProfileForm(UserChangeForm):
     Form for editing user profile information.
     """
 
+class ClothingItemForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email']

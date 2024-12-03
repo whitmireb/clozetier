@@ -12,6 +12,21 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+from django.shortcuts import render, redirect
+
+def signup(request):
+    if request.method == 'POST':  # Handle form submission
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()  # Save the new user
+            login(request, user)  # Log the user in after successful signup
+            return redirect('index')  # Redirect to the homepage or any desired page
+    else:  # Handle GET requests (load the signup form)
+        form = UserCreationForm()
+
+    return render(request, 'registration/signup.html', {'form': form})
 
 @login_required
 def index(request):
@@ -26,10 +41,6 @@ def index(request):
             
             # Run the image through the model
             clothing_result, color_result = run_image_through_models(fs.path(filename))
-            
-            clothing_labels = ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve', 
-                               'pants', 'polo-shirt', 'shoes', 'shorts', 'skirt', 'T-shirt', 'under-shirt']
-            
             
             clothing_labels = ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve', 
                                'pants', 'polo-shirt', 'shoes', 'shorts', 'skirt', 'T-shirt', 'under-shirt']
@@ -188,15 +199,23 @@ def delete_item(request):
         return redirect('clozet')  # Redirect back to the outfit creator view
 
 @login_required
-def select_clothing(request):
-    clothing_items = ClothingItem.objects.filter(user=request.user)
+def select_clothing(request, item_id=0):
+    clothing_items = ClothingItem.objects.filter(user=request.user).order_by('id')
     clothing_labels = ['blazer', 'body', 'buttondown-shirt', 'dress', 'hat', 'hoodie', 'longsleeve', 
                        'pants', 'polo-shirt', 'shoes', 'shorts', 'skirt', 'T-shirt', 'under-shirt']
     
+    if item_id != 0:
+        item = get_object_or_404(clothing_items, id=item_id)
+        user_items = list(clothing_items)
+        user_specific_id = user_items.index(item)
+    else:
+        user_specific_id = 0
+
     is_empty = not clothing_items.exists()
     return render(request, 'select_clothing_image.html', {
         'clothing_items': clothing_items,
         'clothing_labels': clothing_labels,
+        'item_id': user_specific_id,
         'is_empty': is_empty
     })
 
@@ -288,6 +307,7 @@ def get_clothing_recommendations(request):
         recommendations = recommend_clothing(selected_item_color, clothing_article, request.user)
         # Save recommendations to the session to access them in /recommendations/
         request.session['recommendations'] = [item.id for item in recommendations]  # Store IDs or serialize items as needed
+        request.session['prev_image'] = selected_item_id
 
         data = {
             "success": True,
@@ -323,7 +343,10 @@ from .models import ClothingItem
 def show_recommendations(request):
     # Retrieve recommendations from session
     recommendation_ids = request.session.get('recommendations', [])
-    recommendations = ClothingItem.objects.filter(id__in=recommendation_ids)
+    prev_image_id = request.session.get('prev_image')
+    recommendations = ClothingItem.objects.filter(id__in=recommendation_ids).exclude(id=prev_image_id)
+    prev_image = ClothingItem.objects.filter(id=prev_image_id)[0]
+    print(prev_image.image.url)
 
     # Serialize recommendations into a JSON-friendly format
     serialized_recommendations = [
@@ -343,4 +366,5 @@ def show_recommendations(request):
     return render(request, 'recommendations.html', {
         'recommendations_json': recommendations_json,  # Pass to JavaScript
         'recommendations': recommendations,  # For rendering in HTML
+        'prev_image': prev_image.image,
     })
