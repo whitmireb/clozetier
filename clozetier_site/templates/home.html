@@ -37,14 +37,14 @@
         h1 {
             font-family: "Times New Roman", cursive;
             font-size: 32px;
-            color: black;
+            color: #203239;
             margin-bottom: 10px;
         }
 
         p {
             font-family: "Times New Roman", cursive;
             font-size: 24px;
-            color: black;
+            color: #203239;
             margin-bottom: 30px;
         }
 
@@ -110,6 +110,9 @@
             </pre>
         </div>
         <p> Organize, Style, and Make the Most of Your Wardrobe with AI Assistance.</p>
+        <div class="cta-buttons">
+            <a href="{% url 'clozet' %}" class="cta-button">Explore Your Closet</a>
+        </div>
     </div>
     
     {% else %}
@@ -131,16 +134,14 @@
             </div>
         </div>
     {% endif %}
-
+        
     <!-- Additional Information Section -->
     <div class="info">
         <p>Clozetier is designed to help you manage your wardrobe effectively. With our AI-driven platform, you can easily organize your clothing, get style suggestions, and ensure you always look your best.</p>
         <p>Our mission is to simplify your fashion choices, save you time, and enhance your personal style.</p>
         <p>Join us on your journey to a more organized and stylish wardrobe!</p>
     </div>
-    <div class="cta-buttons">
-        <a href="{% url 'clozet' %}" class="cta-button">Explore Your Closet</a>
-    </div>
+    
     <!-- Footer -->
     <div class="footer">
         <p>&copy; 2024 Clozetier. All Rights Reserved.</p>

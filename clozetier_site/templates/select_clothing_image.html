@@ -20,16 +20,31 @@
 
             <!-- Image Display Section -->
             <div id="image-display-container" style="text-align: center;">
-                <button class="nav-button" onclick="prevImage()">Previous</button>
-                <img id="displayed-image" src="" alt="Selected Clothing" style="max-width: 50%; height: auto; border: 2px solid var(--accent);" />
-                <button class="nav-button" onclick="nextImage()">Next</button>
+                <img id="displayed-image" src="" alt="Selected Clothing" style="width: 200px; height: 200px;" />
                 
                 <!-- Image Counter -->
-                <div id="image-counter" style="font-size: 18px; color: var(--accent); margin-top: 10px;"></div>
+                <div id="image-counter" style="font-size: 18px; color: #203239; margin-top: 10px; padding-bottom: 12px;"></div>
             </div>
 
+            <div style="text-align: center;">
+                <button class="custom-button" onclick="prevImage()">
+                    <div class="shadow"></div>
+                    <div class="edge"></div>
+                    <div class="front">
+                        <span>Previous</span>
+                    </div>
+                </button>
+                <button class="custom-button" onclick="nextImage()">
+                    <div class="shadow"></div>
+                    <div class="edge"></div>
+                    <div class="front">
+                        <span>Next</span>
+                    </div>
+                </button>
+            </div>
+        
             <!-- Image Info and Submit Button -->
-            <div id ="submit-stuff" style="text-align: center; margin-top: 20px;">
+            <div id ="submit-stuff" style="text-align: center; margin-top: 20px; color: #203239">
                 <p id="image-info" style="font-size: 16px;"></p>
                 
                 <label for="clothing-article">What clothing article are you looking for?</label>
@@ -39,8 +54,16 @@
                     <option value="{{ label }}">{{ label }}</option>
                     {% endfor %}
                 </select>
-                
-                <button id="submit-button" onclick="submitSelection()">Submit Selection</button>
+            </div>
+            <div style="text-align: center; padding-top: 12px;">
+                <button id="submit-button" class="custom-button" onclick="submitSelection()">
+                    <div class="shadow"></div>
+                    <div class="edge"></div>
+                    <div class="front">
+                        <span>Submit</span>
+                    </div>
+                </button>
+
             </div>
         {% endif %}
     </div>
