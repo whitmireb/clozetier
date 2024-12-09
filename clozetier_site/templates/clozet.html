@@ -69,7 +69,7 @@
 <!-- Side panel -->
 <div id="side-panel" class="side-panel" style="background-color: var(--secondary); color: var(--alt_text)">
   <div id="side-panel-content">
-    <button onclick="closePanel()">Close</button>
+    <button onclick="closePanel()" class="button">Close</button>
     <img id="panel-image" src="" alt="Selected Item" />
     <div id="item-details">
       <p id="item-type"></p>
@@ -77,10 +77,10 @@
       <form method="POST" action="{% url 'delete_item' %}">
         {% csrf_token %}
         <input type="hidden" name="item_id" id="item-id" />
-        <button type="submit">Delete</button>
+        <button type="submit" class="button">Delete</button>
       </form>
       <form id="recommendation-form" method="get">
-        <button type="submit">Recommendations</button>
+        <button type="submit" class="button">Recommendations</button>
       </form>
     </div>
   </div>
