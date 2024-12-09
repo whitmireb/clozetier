@@ -17,6 +17,13 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
 
+categories = {
+                'hats': ['hat'],
+                'tops': ['T-shirt', 'longsleeve', 'polo-shirt', 'hoodie', 'buttondown-shirt', 'blazer', 'dress', 'body', 'under-shirt'],
+                'bottoms': ['pants', 'shorts', 'skirt'],
+                'shoes': ['shoes'],
+            }
+
 def signup(request):
     if request.method == 'POST':  # Handle form submission
         form = UserCreationForm(request.POST)
@@ -57,15 +64,6 @@ def index(request):
 
             user_items = ClothingItem.objects.filter(user=request.user)
 
-            # Categorize items
-            categories = {
-                'hats': ['hat'],
-                'tops': ['T-shirt', 'longsleeve', 'polo-shirt', 'hoodie', 'buttondown-shirt', 'blazer', 'dress'],
-                'tops': ['T-shirt', 'longsleeve', 'polo-shirt', 'hoodie', 'buttondown-shirt', 'blazer', 'dress'],
-                'bottoms': ['pants', 'shorts', 'skirt'],
-                'shoes': ['shoes'],
-            }
-
             categorized_items = {
                 'hats': [item for item in user_items if item.cloth_type in categories['hats']],
                 'tops': [item for item in user_items if item.cloth_type in categories['tops']],
@@ -89,14 +87,6 @@ def index(request):
         form = ClothingItemForm()
 
     user_items = ClothingItem.objects.filter(user=request.user)
-
-    # Categorize items
-    categories = {
-        'hats': ['hat'],
-        'tops': ['T-shirt', 'longsleeve', 'polo-shirt', 'hoodie', 'buttondown-shirt', 'blazer'],
-        'bottoms': ['pants', 'shorts', 'skirt'],
-        'shoes': ['shoes'],
-    }
 
     categorized_items = {
         'hats': [item for item in user_items if item.cloth_type in categories['hats']],
@@ -129,14 +119,6 @@ def clozet_view(request):
     # Retrieve user items
     user_items = ClothingItem.objects.filter(user=request.user)
 
-    # Categorize items as done in the `index` view
-    categories = {
-        'hats': ['hat'],
-        'tops': ['T-shirt', 'longsleeve', 'polo-shirt', 'hoodie', 'buttondown-shirt', 'blazer'],
-        'bottoms': ['pants', 'shorts', 'skirt'],
-        'shoes': ['shoes'],
-    }
-
     categorized_items = {
         'hats': [item for item in user_items if item.cloth_type in categories['hats']],
         'tops': [item for item in user_items if item.cloth_type in categories['tops']],
@@ -153,14 +135,6 @@ def clozet_view(request):
 def outfit_creator_view(request):
     # Retrieve user items
     user_items = ClothingItem.objects.filter(user=request.user)
-
-    # Categorize items as done in the `index` view
-    categories = {
-        'hats': ['hat'],
-        'tops': ['T-shirt', 'longsleeve', 'polo-shirt', 'hoodie', 'buttondown-shirt', 'blazer'],
-        'bottoms': ['pants', 'shorts', 'skirt'],
-        'shoes': ['shoes'],
-    }
 
     categorized_items = {
         'hats': [item for item in user_items if item.cloth_type in categories['hats']],
