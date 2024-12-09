@@ -2,6 +2,74 @@
 {% block title %}Clozetier{% endblock %}
 
 {% block content %}
+
+<style>
+    .custom-dropdown {
+        display: block;
+        width: 100%;
+        max-width: 300px;
+        margin: 10px auto;
+        padding: 10px 15px;
+        font-size: 1rem;
+        font-weight: bold;
+        color: var(--text);
+        background-color: var(--accent);
+        border: none;
+        border-radius: 5px;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Hover effect */
+    .custom-dropdown:hover {
+        background-color: var(--secondary);
+        color: var(--alt_text);
+        transform: translateY(-2px);
+    }
+
+    /* Active state */
+    .custom-dropdown:active {
+        background-color: var(--secondary);
+        transform: translateY(0);
+    }
+
+    /* Style the dropdown arrow */
+    .custom-dropdown option {
+        background-color: var(--accent);
+        color: var(--text);
+        padding: 10px;
+        border: none;
+    }
+
+    .form-row {
+    display: flex;
+    flex-direction: column; /* Stack label and dropdown vertically */
+    align-items: center; /* Center-align the items */
+    margin-bottom: 20px; /* Add spacing between rows */
+}
+
+.form-label {
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 10px; /* Add space between label and dropdown */
+    white-space: nowrap;
+    width: 100%; /* Allow label to take full width */
+    text-align: center; /* Center-align the label text */
+}
+
+.styled-select.custom-dropdown {
+    font-size: 1rem;
+    padding: 5px;
+    max-width: 250px;
+    width: 100%; /* Make the dropdown take up the full width of its container */
+}
+
+
+
+</style>
+
     <div class="container">
     <!-- Closet Box -->
     <div class="closet-box">
@@ -41,21 +109,26 @@
         <form method="POST" action="{% url 'save_item' %}">
             {% csrf_token %}
             <input type="hidden" name="image" value="{{ uploaded_image_url|cut:"media/" }}">
-            <h2 for="predicted-type">Predicted Clothing Type:</h2>
     
-            <select class="styled-select" id="predicted-type" , name="predicted_type">
-                {% for label in clothing_labels %}
-                <option value="{{ label }}" {% if predicted_type == label %} selected {% endif %}>{{ label }}</option>
-                {% endfor %}
-            </select>
+            <div class="form-row">
+                <span class="form-label">Predicted Clothing Type:</span>
+                <select class="styled-select custom-dropdown" id="predicted-type" name="predicted_type">
+                    {% for label in clothing_labels %}
+                    <option value="{{ label }}" {% if predicted_type == label %} selected {% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
     
-            <h2>Predicted Color:</h2>
-            <select id="predicted-color" name="predicted_color">
-                {% for label in color_labels %}
-                <option value="{{ label }}" {% if predicted_color == label %} selected {% endif %}>{{ label }}</option>
-                {% endfor %}
-            </select>
-            <div style="padding:20px">
+            <div class="form-row">
+                <span class="form-label">Predicted Color:</span>
+                <select class="styled-select custom-dropdown" id="predicted-color" name="predicted_color">
+                    {% for label in color_labels %}
+                    <option value="{{ label }}" {% if predicted_color == label %} selected {% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+    
+            <div style="padding: 20px; text-align: center;">
                 <button id="save-button" type="submit" class="custom-button">
                     <div class="shadow"></div>
                     <div class="edge"></div>
@@ -65,7 +138,7 @@
                 </button>
             </div>
         </form>
-        {% endif %}
+    {% endif %}
 
     </div>
     <script>
