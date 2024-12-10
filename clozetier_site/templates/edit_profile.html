@@ -9,10 +9,19 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <style>
+        :root {
+            --text: #203239;
+            --alt_text: #EEEDDE;
+            --background: #EEEDDE;
+            --primary: #141E27;
+            --secondary: #203239;
+            --accent: #E0DDAA;
+        }
+
         /* General styles */
         html, body {
-            background-color: #222; /* Dark background */
-            color: #eee;
+            background-color: var(--background);
+            color: var(--text);
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
@@ -26,39 +35,82 @@
             align-items: center;
             flex-direction: column;
             height: 100vh; /* Full height for centering */
+            padding: 20px;
         }
 
         .form-container {
-            background-color: #333;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 15px 0;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 300px;
-            text-align: center;
+            background-color: var(--primary);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            width: 350px; /* Slightly wider to accommodate label-input alignment */
+            text-align: left; /* Aligns text to the left */
         }
 
         h2 {
-            margin-bottom: 15px;
-            color: #4db8ff;
+            margin-bottom: 20px;
+            color: var(--accent);
+            font-size: 1.5em;
+            text-align: center; /* Keeps titles centered */
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Adds spacing between form rows */
+        }
+
+        .form-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .form-row label {
+            flex: 1;
+            font-size: 1em;
+            color: var(--alt_text);
+            margin-right: 10px;
+        }
+
+        .form-row input, 
+        .form-row select, 
+        .form-row textarea {
+            flex: 2;
+            padding: 8px;
+            border: 1px solid var(--secondary);
+            border-radius: 5px;
+            background-color: var(--secondary);
+            color: var(--alt_text);
         }
 
         button {
-            background-color: #4db8ff;
-            color: #fff;
+            background-color: var(--accent);
+            color: var(--primary);
             border: none;
-            padding: 10px;
+            padding: 12px 20px;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 10px;
         }
 
         button:hover {
-            background-color: #006bb3;
+            background-color: var(--primary);
+            color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        p {
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: var(--secondary);
         }
 
         /* Sidebar text (CLOZETIER) specific styles */
         .sidebar h1, .sidebar a {
-            color: #4db8ff !important; /* Ensures the "CLOZETIER" text retains its original color */
+            color: var(--alt_text) !important;
         }
     </style>
 </head>
@@ -67,10 +119,15 @@
     <div class="center-container">
         <!-- Profile Edit Form -->
         <div class="form-container">
+            <h2>Update Your Information</h2>
             <form method="post" action="{% url 'edit_profile' %}">
                 {% csrf_token %}
-                <h2>Update Your Information</h2>
-                {{ form.as_p }}
+                {% for field in form %}
+                <div class="form-row">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                </div>
+                {% endfor %}
                 <button type="submit">Save Changes</button>
             </form>
         </div>
@@ -81,7 +138,12 @@
             {% if password_change_form %}
             <form method="post" action="{% url 'password_change' %}">
                 {% csrf_token %}
-                {{ password_change_form.as_p }}
+                {% for field in password_change_form %}
+                <div class="form-row">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                </div>
+                {% endfor %}
                 <button type="submit">Change Password</button>
             </form>
             {% else %}
