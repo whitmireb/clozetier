@@ -7,57 +7,93 @@
 
 {% block content %}
     <style>
+        /* Define color variables */
+        :root {
+            --text: #203239;
+            --alt_text: #eeedde;
+            --background: #eeedde;
+            --primary: #141e27;
+            --secondary: #203239;
+            --accent: #e0ddaa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 120vh;
+            background-color: var(--background);
+            color: var(--text);
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
         p {
-            font-family: "Arial Black", sans-serif; /* Choose a bold font to enhance the 3D effect */
+            color: var(--text);
             font-size: 16px;
-            color: #203239; /* Dark gray for better contrast */
+            line-height: 1.5;
+        }
+
+        .contact-group {
+            margin-bottom: 20px; /* Adds spacing between groups */
+            background-color: var(--accent);
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .contact-group p {
+            margin: 5px 0;
+        }
+
+        .contact-group strong {
+            color: var(--primary);
+            font-size: 18px;
         }
     </style>
 
     <h1>Contact Us</h1>
-        <p>Governor of Georgia:</p>
 
-        <p>Office of the Governor</p>
+    <div class="contact-group">
+        <p><strong>AI Issues:</strong></p>
+        <p>Contact: Aiden Coffey</p>
+        <p>Email: acoffey@mocs.flsouthern.edu</p>
+        <p>GitHub: https://github.com/AidenCoffey</p>
+    </div>
 
-        <p>206 Washington Street</p>
+    <div class="contact-group">
+        <p><strong>Clozet Issues:</strong></p>
+        <p>Contact: Brendan Whitmire</p>
+        <p>Email: bwhitmire@mocs.flsouthern.edu</p>
+        <p>GitHub: https://github.com/whitmireb</p>
+    </div>
 
-        <p>Suite 203, State Capitol</p>
+    <div class="contact-group">
+        <p><strong>Account Issues:</strong></p>
+        <p>Contact: Mason Pond</p>
+        <p>Email: mpond2@mocs.flsouthern.edu</p>
+        <p>GitHub: https://github.com/MasonPound</p>
+    </div>
 
-        <p>Atlanta, GA 30334</p>
+    <div class="contact-group">
+        <p><strong>Website Issues:</strong></p>
+        <p>Contact: Preston Stike</p>
+        <p>Email: pstike@mocs.flsouthern.edu</p>
+        <p>GitHub: https://github.com/PStike2022</p>
+    </div>
 
-        <p>Phone: (404) 656-1776​</p>
-
-        <p>GEORGIA.GOV</p>
-
-        <p>​</p>
-        <p>GEORGIA.GOV</p>
-        
-        <p>Governor of Florida:</p>
-
-        <p>Executive Office of the Governor</p>
-
-        <p>The Capitol</p>
-
-        <p>400 South Monroe Street</p>
-
-        <p>Tallahassee, FL 32399-0001</p>
-
-        <p>Phone: (850) 488-7146​</p>
-
-        <p>GEORGIA.GOV</p>
-
-        <p>​</p>
-        
-        <p>Governor of South Dakota:</p>
-
-        <p>Office of the Governor</p>
-
-        <p>500 East Capitol Avenue</p>
-
-        <p>Pierre, SD 57501</p>
-
-        <p>Phone: (605) 773-3212</p>
-        
-        <p>GEORGIA.GOV</p>
-        
+    <div class="contact-group">
+        <p><strong>Legal Issues:</strong></p>
+        <p>Contact: Christian Roberson</p>
+        <p>Phone: 863-680-5058</p>
+        <p>Email: croberson@flsouthern.edu</p>
+        <p>GitHub: https://github.com/theroberson</p>
+    </div>
 {% endblock %}
