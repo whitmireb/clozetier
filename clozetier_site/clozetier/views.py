@@ -277,7 +277,7 @@ def get_clothing_recommendations(request):
             return JsonResponse({"success": False, "error": "Missing data fields"}, status=400)
 
         # Get recommendations using recommend_clothing function
-        recommendations = recommend_clothing(selected_item_color, clothing_article, request.user)
+        recommendations = recommend_clothing(selected_item_color, clothing_article, selected_item_type, request.user)
         # Save recommendations to the session to access them in /recommendations/
         request.session['recommendations'] = [item.id for item in recommendations]  # Store IDs or serialize items as needed
         request.session['prev_image'] = selected_item_id
@@ -290,7 +290,7 @@ def get_clothing_recommendations(request):
 
     return JsonResponse({"success": False, "error": "Invalid request"}, status=400)
 
-def recommend_clothing(selected_color, clothing_article, active_user):
+def recommend_clothing(selected_color, clothing_article, selected_item_type, active_user):
     matching_colors = COLOR_RECOMMENDATIONS.get(selected_color, [])
     recommended_items = []
 
@@ -300,6 +300,10 @@ def recommend_clothing(selected_color, clothing_article, active_user):
         clothing_items = ClothingItem.objects.filter(user=active_user)
     else:
         clothing_items = ClothingItem.objects.filter(cloth_type=clothing_article, user=active_user)
+    
+    if clothing_article != selected_item_type:
+        clothing_items = clothing_items.exclude(cloth_type=selected_item_type)
+
     for item in clothing_items:
         if item.cloth_color in matching_colors:
             recommended_items.append(item)
